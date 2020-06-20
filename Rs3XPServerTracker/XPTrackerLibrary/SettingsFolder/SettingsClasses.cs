@@ -14,6 +14,10 @@ namespace XPTrackerLibrary.SettingsFolder
         public string password { get; set; }
     }
 
+    public class DiscordBotSettings
+    {
+        public string token { get; set; }
+    }
     public class SettingsClasses
     {
         public MySqlSettings mysqlSettings = new MySqlSettings();

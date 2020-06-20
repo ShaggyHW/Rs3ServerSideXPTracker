@@ -18,14 +18,14 @@ using System.Windows.Shapes;
 namespace XPTrackerLibrary
 {
 
-    public class FunctionsRS : Control
+    public class FunctionsRS
     {
         Rs3API.Rs3API Rs3API = new Rs3API.Rs3API();
         MySqlFunctions MySqlFunctions = new MySqlFunctions();
         static SettingsFolder.Settings settings = new SettingsFolder.Settings();
         static FunctionsRS()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(FunctionsRS), new FrameworkPropertyMetadata(typeof(FunctionsRS)));
+           
             SettingsFolder.TableCreatorClass tableCreatorClass = new SettingsFolder.TableCreatorClass();
             tableCreatorClass.createTables(settings.Rs3PlayerTable);
             tableCreatorClass.createTables(settings.Rs3PlayerSkillsTable);
