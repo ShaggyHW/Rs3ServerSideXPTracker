@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,8 +35,24 @@ namespace XPTrackerLibrary
         {
             MyClasses.Rs3Player rs3PlayerAPI = await Rs3API.GetRs3Player(Username);
             MyClasses.Rs3Player rs3PlayerDB = MySqlFunctions.GetRs3PlayerDB(Username);
+            if (rs3PlayerAPI == null)
+            {
+                return;
+            }
+            if (rs3PlayerDB == null)
+            {
+                MySqlFunctions.InsertIntoDB(rs3PlayerAPI, true);
+            }
+            else
+            {
+                
 
 
+
+
+
+                MySqlFunctions.InsertIntoDB(rs3PlayerAPI, false);
+            }
 
 
 

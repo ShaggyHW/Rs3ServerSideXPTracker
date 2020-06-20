@@ -11,21 +11,19 @@ namespace XPTrackerLibrary.Rs3API
 {
     public class Rs3API
     {
-
-
         public async Task<MyClasses.Rs3Player> GetRs3Player(string Username)
         {
-
-
             var restClient = new RestClient("https://apps.runescape.com/runemetrics/profile/profile");
             var request = new RestRequest("?user=" + Username + "&activities=0", DataFormat.Json);
             restClient.UseNewtonsoftJson();
-
             var response = restClient.Get(request);
-
+            if (response.Content.Contains("error"))
+            {
+                return null;
+            }
             JsonNetSerializer jsonNetSerializer = new JsonNetSerializer();
             MyClasses.Rs3Player rs3Player = jsonNetSerializer.Deserialize<MyClasses.Rs3Player>(response);
-            foreach(MyClasses.skillvalues skillvalues in rs3Player.Skillvalues)
+            foreach (MyClasses.skillvalues skillvalues in rs3Player.Skillvalues)
             {
                 switch (skillvalues.ID)
                 {
@@ -116,7 +114,7 @@ namespace XPTrackerLibrary.Rs3API
 
                 }
             }
-            rs3Player.Skillvalues.Sort((x,y)=> { return x.ID - y.ID; });
+            rs3Player.Skillvalues.Sort((x, y) => { return x.ID - y.ID; });
 
 
             return rs3Player;
