@@ -26,7 +26,7 @@ namespace XPTrackerLibrary.SettingsFolder
                 {
                     mySqlConnection.Close();
                     mySqlConnection.Open();                    
-                    query = "CREATE TABLE "+table+" (Name varchar(255), Rank varchar(255), LoggedIn varchar(255))";
+                    query = "CREATE TABLE "+table+" (Name varchar(255))";
                     cmd = new MySqlCommand(query, mySqlConnection);
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();

@@ -20,7 +20,7 @@ namespace XPTrackerLibrary
                 string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
                 MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
                 mySqlConnection.Open();
-                string query = "Insert Into " + settings.Rs3PlayerTable + " (Name,Rank,LoggedIN) VALUES ('" + rs3Player.Name.ToLower() + "','" + rs3Player.Rank + "','" + rs3Player.LoggedIn + "')";
+                string query = "Insert Into " + settings.Rs3PlayerTable + " (Name) VALUES ('" + rs3Player.Name.ToLower() + "')";
                 var cmd = new MySqlCommand(query, mySqlConnection);
                 var reader = cmd.ExecuteNonQuery();
                 mySqlConnection.Close();
@@ -29,7 +29,7 @@ namespace XPTrackerLibrary
                 {
                     mySqlConnection.Open();
                     query = "Insert Into " + settings.Rs3PlayerSkillsTable + " (Username,Name,Level,XP,Rank,ID) " +
-                        "VALUES ('"+rs3Player.Name.ToLower()+"','" + skillvalues.Name + "','" + skillvalues.Level + "','" + skillvalues.Xp + "','" + skillvalues.Rank + "','"+ skillvalues .ID+ "')";
+                        "VALUES ('" + rs3Player.Name.ToLower() + "','" + skillvalues.Name + "','" + skillvalues.Level + "','" + skillvalues.Xp + "','" + skillvalues.Rank + "','" + skillvalues.ID + "')";
                     cmd = new MySqlCommand(query, mySqlConnection);
                     reader = cmd.ExecuteNonQuery();
                     mySqlConnection.Close();
@@ -38,25 +38,46 @@ namespace XPTrackerLibrary
             else
             {
                 //Update User
+                var mysqlSettings = settings.GetMySqlSettings();
+                string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
+                MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+                mySqlConnection.Open();
+                string query = "Update " + settings.Rs3PlayerTable + " " +
+                    "Set Name='" + rs3Player.Name.ToLower() + "' " +
+                    "Where Name='" + rs3Player.Name.ToLower() + "'";
+                var cmd = new MySqlCommand(query, mySqlConnection);
+                var reader = cmd.ExecuteNonQuery();
+                mySqlConnection.Close();
+
+                foreach (MyClasses.skillvalues skillvalues in rs3Player.Skillvalues)
+                {
+                    mySqlConnection.Open();
+                    query = "UPDATE " + settings.Rs3PlayerSkillsTable + " " +
+                        "Set Username='" + rs3Player.Name.ToLower() + "', Name='" + skillvalues.Name + "', Level='" + skillvalues.Level + "', " +
+                        "XP='" + skillvalues.Xp + "',Rank='" + skillvalues.Rank + "',ID='" + skillvalues.ID + "' " +
+                        "Where ID='" + skillvalues.ID + "'";
+                    cmd = new MySqlCommand(query, mySqlConnection);
+                    reader = cmd.ExecuteNonQuery();
+                    mySqlConnection.Close();
+                }
             }
         }
 
         public MyClasses.Rs3Player GetRs3PlayerDB(string name)
         {
-            
+
             var mysqlSettings = settings.GetMySqlSettings();
             string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
             MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            mySqlConnection.Close();
             mySqlConnection.Open();
-            string query = "SELECT Name,Rank,LoggedIn FROM " + settings.Rs3PlayerTable + " WHERE Name = '" + name + "'";
+            string query = "SELECT Name FROM " + settings.Rs3PlayerTable + " WHERE Name='" + name + "'";
             var cmd = new MySqlCommand(query, mySqlConnection);
             var reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
                 MyClasses.Rs3Player rs3Player = new MyClasses.Rs3Player();
                 rs3Player.Name = reader.GetString(0);
-                rs3Player.Rank = reader.GetString(1);
-                rs3Player.LoggedIn = reader.GetString(2);
                 rs3Player.Skillvalues = new List<MyClasses.skillvalues>();
 
                 MySqlConnection mySqlConnection2 = new MySqlConnection(connectionString);
