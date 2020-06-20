@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{15D27ECA-3DC6-4677-9A66-F684FE4C0202}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs3TrackerManager", "WpfApp1\Rs3TrackerManager.csproj", "{15D27ECA-3DC6-4677-9A66-F684FE4C0202}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
