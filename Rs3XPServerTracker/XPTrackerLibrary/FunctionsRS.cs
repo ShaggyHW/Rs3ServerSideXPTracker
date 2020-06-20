@@ -29,36 +29,49 @@ namespace XPTrackerLibrary
             SettingsFolder.TableCreatorClass tableCreatorClass = new SettingsFolder.TableCreatorClass();
             tableCreatorClass.createTables(settings.Rs3PlayerTable);
             tableCreatorClass.createTables(settings.Rs3PlayerSkillsTable);
+            tableCreatorClass.createTables(settings.Rs3PlayerSkillGainzTable);
         }
 
-        public async void Calculate(string Username)
+        public async Task<MyClasses.Rs3Player> Calculate(string Username)
         {
             MyClasses.Rs3Player rs3PlayerAPI = await Rs3API.GetRs3Player(Username);
             MyClasses.Rs3Player rs3PlayerDB = MySqlFunctions.GetRs3PlayerDB(Username);
             if (rs3PlayerAPI == null)
             {
-                return;
+                return null;
             }
             if (rs3PlayerDB == null)
             {
-                MySqlFunctions.InsertIntoDB(rs3PlayerAPI, true);
+                //New User Add him to DB
+                MySqlFunctions.InsertIntoDBPlayers(rs3PlayerAPI, true);
+                return null;
             }
             else
             {
-                for
+                MyClasses.Rs3Player rs3PlayerGainz = new MyClasses.Rs3Player();
+                rs3PlayerGainz.Name = Username;
+                rs3PlayerGainz.Skillvalues = new List<MyClasses.skillvalues>();
+                //old user Calculate and Update Info
+                foreach (MyClasses.skillvalues skillvaluesAPI in rs3PlayerAPI.Skillvalues)
+                {
+                    foreach(MyClasses.skillvalues skillvaluesDB in rs3PlayerDB.Skillvalues)
+                    {
+                        if (skillvaluesAPI.ID == skillvaluesDB.ID)
+                        {
+                            MyClasses.skillvalues skillvaluesGainz = new MyClasses.skillvalues();
+                            skillvaluesGainz = skillvaluesDB;
+                            skillvaluesGainz.Xp = skillvaluesAPI.Xp - skillvaluesDB.Xp;
+                            rs3PlayerGainz.Skillvalues.Add(skillvaluesGainz);
+                        }
+                    }
+                }
+                MySqlFunctions.InsertIntoDBPlayerGainz(rs3PlayerGainz);
+                //MySqlFunctions.InsertIntoDBPlayers(rs3PlayerAPI, false);
 
-
-
-
-
-                MySqlFunctions.InsertIntoDB(rs3PlayerAPI, false);
+                var gainz = MySqlFunctions.GetRs3PlayerGainz(Username);
+                return gainz;
             }
-
-
-
+                       
         }
-
-
-
     }
 }

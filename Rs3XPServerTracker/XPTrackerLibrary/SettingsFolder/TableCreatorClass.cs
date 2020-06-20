@@ -40,6 +40,15 @@ namespace XPTrackerLibrary.SettingsFolder
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();
                 }
+                if(table== "tbl_Rs3PlayerSkillGainzTable")
+                {
+                    mySqlConnection.Close();
+                    mySqlConnection.Open();
+                    query = "CREATE TABLE " + table + " (Username varchar(255),Name varchar(255), Level varchar(255), Xp varchar(255), Rank varchar(255), ID int)";
+                    cmd = new MySqlCommand(query, mySqlConnection);
+                    cmd.ExecuteNonQuery();
+                    mySqlConnection.Close();
+                }
             }
         }
     }

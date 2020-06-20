@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using XPTrackerLibrary;
 using XPTrackerLibrary.SettingsFolder;
+using Newtonsoft;
+using Newtonsoft.Json;
 
 namespace Rs3TrackerManager
 {
@@ -30,9 +32,10 @@ namespace Rs3TrackerManager
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            FunctionsRS.Calculate(txt_Username.Text.ToLower());
+            var rs3Gainz = await FunctionsRS.Calculate(txt_Username.Text.ToLower());
+            var x = JsonConvert.SerializeObject(rs3Gainz);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
