@@ -12,17 +12,38 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XPTrackerLibrary;
+using XPTrackerLibrary.SettingsFolder;
 
-namespace WpfApp1
+namespace Rs3TrackerManager
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        Settings settings = new Settings();
+
+        FunctionsRS FunctionsRS = new FunctionsRS();
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            FunctionsRS.Calculate(txt_Username.Text.ToLower());
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            MySqlSettings mySqlSettings = new MySqlSettings();
+            mySqlSettings.database = MYSQLDB.Text;
+            mySqlSettings.ip = MYSQLIP.Text;
+            mySqlSettings.username = MYSQLUSER.Text;
+            mySqlSettings.password = MYSQLPW.Text;
+
+            settings.SaveMySQLSettings(mySqlSettings);
         }
     }
 }
