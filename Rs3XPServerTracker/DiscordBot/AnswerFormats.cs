@@ -184,26 +184,8 @@ namespace DiscordBot
 
         public async Task<string> FormatXPAnswerTable(Rs3Player rs3Player)
         {
-            string lineSplit = "+-------------+-----+---------+---------+";
-            string lineSkill = "|----Ranged---|--9--|0000000000|-2000000-|";
-            string lineHeader = "|----Skill----|Level|-XPGainz-|HighScore|";
-            string x = "+---------------+-------+-----------+------------+" +
-                       "|-----Skill-----|-Level-| XP Gained |--HighScore-|" +
-                       "+---------------+-------+-----------+------------+" +
-                       "|-----Attack----|--120--|000000000.0|-00,000,000-|" +
-                       "+---------------+-------+-----------+------------+" +
-                       "|               |       |           |            |" +
-                       "+---------------+-------+-----------+------------+" +
-                       "|               |       |           |            |" +
-                       "+---------------+-------+-----------+------------+";
-            string cellSkill = "";
-            string cellLevel = "";
-            string cellXP = "";
-            string cellHighScore = "";
-            int maxLength = 15;
-
-
-
+            string lineSplit = "+-------------+-----+---------+---------+";           
+            string lineHeader = "|----Skill----|Level|-XPGainz-|HighScore|";    
             string botAnswer = rs3Player.Name + " ``` \n" + lineSplit + "\n" + lineHeader + "\n" + lineSplit; ;
             foreach (skillvalues skillvalues in rs3Player.Skillvalues)
             {                
@@ -211,104 +193,9 @@ namespace DiscordBot
                 line += setTableLine(skillvalues);
                 botAnswer += line ;
             }
-
             botAnswer += "\n" + lineSplit+"```";
             return botAnswer;
-        }
-        public async Task<string> FormatXPAnswer(Rs3Player rs3Player)
-        {
-            string defaultCell = "{0}";
-
-            int maxLength = 15;
-            string defaultLine = "{0}|{1}|{2}|{3}";
-            string botAnswer = rs3Player.Name;
-            botAnswer += "\n";
-            botAnswer += string.Format(defaultLine, "     Skill     ", "     Level     ", "  XP Gained   ", "  HighScore   ");
-            foreach (skillvalues skillvalues in rs3Player.Skillvalues)
-            {
-                string line = "\n";
-                if (skillvalues.Name.Length < 15)
-                {
-                    string cell = string.Format(defaultCell, skillvalues.Name);
-                    int spaces = maxLength - skillvalues.Name.Length;
-                    int remainder = spaces % 2;
-                    int quotient = spaces / 2;
-                    int spaceBefore = quotient / 2;
-                    for (int i = 0; i < spaceBefore; i++)
-                    {
-                        cell = " " + cell;
-                    }
-                    int spaceAfter = (quotient / 2) + remainder;
-                    for (int i = 0; i < spaceAfter; i++)
-                    {
-                        cell = cell + " ";
-                    }
-                    line += cell + "|";
-                }
-                if (skillvalues.Level.ToString().Length < 15)
-                {
-                    string cell = string.Format(defaultCell, skillvalues.Level.ToString());
-                    int spaces = maxLength - skillvalues.Level.ToString().Length;
-                    int remainder = spaces % 2;
-                    int quotient = spaces / 2;
-                    int spaceBefore = quotient / 2;
-                    for (int i = 0; i < spaceBefore; i++)
-                    {
-                        cell = " " + cell;
-                    }
-                    int spaceAfter = (quotient / 2) + remainder;
-                    for (int i = 0; i < spaceAfter; i++)
-                    {
-                        cell = cell + " ";
-                    }
-                    line += cell + "|";
-                }
-                if (skillvalues.Xp.ToString().Length < 15)
-                {
-                    string cell = string.Format(defaultCell, skillvalues.Xp.ToString());
-                    int spaces = maxLength - skillvalues.Xp.ToString().Length;
-                    int remainder = spaces % 2;
-                    int quotient = spaces / 2;
-                    int spaceBefore = quotient / 2;
-                    for (int i = 0; i < spaceBefore; i++)
-                    {
-                        cell = " " + cell;
-                    }
-                    int spaceAfter = (quotient / 2) + remainder;
-                    for (int i = 0; i < spaceAfter; i++)
-                    {
-                        cell = cell + " ";
-                    }
-                    line += cell + "|";
-                }
-                if (skillvalues.Rank.ToString().Length < 15)
-                {
-                    string cell = string.Format(defaultCell, skillvalues.Rank.ToString());
-                    int spaces = maxLength - skillvalues.Rank.ToString().Length;
-                    int remainder = spaces % 2;
-                    int quotient = spaces / 2;
-                    int spaceBefore = quotient / 2;
-                    for (int i = 0; i < spaceBefore; i++)
-                    {
-                        cell = " " + cell;
-                    }
-                    int spaceAfter = (quotient / 2) + remainder;
-                    for (int i = 0; i < spaceAfter; i++)
-                    {
-                        cell = cell + " ";
-                    }
-                    line += cell;
-                }
-
-                // line += string.Format(defaultLine, skillvalues.Name, skillvalues.Level, skillvalues.Xp, skillvalues.Rank);
-                botAnswer += line;
-            }
-
-
-
-            return botAnswer;
-        }
-
+        }   
 
     }
 }
