@@ -209,10 +209,10 @@ namespace DiscordBot
             {                
                 string line = "\n";
                 line += setTableLine(skillvalues);
-                botAnswer += line;
+                botAnswer += line ;
             }
 
-            botAnswer += "```";
+            botAnswer += "\n" + lineSplit+"```";
             return botAnswer;
         }
         public async Task<string> FormatXPAnswer(Rs3Player rs3Player)

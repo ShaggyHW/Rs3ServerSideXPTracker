@@ -62,18 +62,15 @@ namespace DiscordBot
                     {
                         username = user;
                         rs3Player = await functionsRS.Calculate(username);
-                        BotAnswer = JsonConvert.SerializeObject(rs3Player);
-                        AnswerFormats answerFormats = new AnswerFormats();
-                        BotAnswer = await answerFormats.FormatXPAnswer(rs3Player);
-                        string MergedAnswer;
-                        if (BotAnswer.Length > 2000)
+                        if (rs3Player != null)
                         {
-                            string[] answerArray = BotAnswer.Split('\n');
-
+                            BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                            AnswerFormats answerFormats = new AnswerFormats();
+                            BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player);
+                            int xy = BotAnswer.Length;
+                            Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
+                            var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
                         }
-
-                        Console.WriteLine(BotAnswer);
-                        var x = await e.Message.RespondAsync(DateTime.Now + ":\n " + BotAnswer + "");
                     }
                     string[] mArray = message.Split(' ');
                     
