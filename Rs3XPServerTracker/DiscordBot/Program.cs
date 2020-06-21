@@ -43,6 +43,7 @@ namespace DiscordBot
                     string message = e.Message.Content.ToLower();
                     message = message.Replace("!SHW".ToLower(), string.Empty);
                     message = message.Trim();
+
                     bool isAdmin = SqlFunctions.GetBotAdmins(e.Author.Id.ToString());
                     #region AdminCommands
                     if (message.ToLower().StartsWith("add_admin".ToLower()))
@@ -82,23 +83,28 @@ namespace DiscordBot
 
                     #region UserCommands
                     if (message.ToLower().StartsWith("commands".ToLower()))
-                    {                        
+                    {
                         await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n https://github.com/ShaggyHW/Rs3ServerSideXPTracker/blob/master/README.md");
                     }
                     if (message.ToLower().StartsWith("stats".ToLower()))
                     {
-                        
-                        string[] mArray = message.Split(' ');
                         string username = "";
-                        for (int i = 1; i < mArray.Length; i++)
+                        if (e.MentionedUsers.Count() > 0)
                         {
-                            username += mArray[i] + " ";
+                            username = SqlFunctions.GetLinkedAccount(e.MentionedUsers[0].Id.ToString());
                         }
-                        username = username.Trim();
-                        if (string.IsNullOrEmpty(username))
+                        else
                         {
-                            username = SqlFunctions.GetLinkedAccount(e.Message.Author.Id.ToString());
-
+                            string[] mArray = message.Split(' ');
+                            for (int i = 1; i < mArray.Length; i++)
+                            {
+                                username += mArray[i] + " ";
+                            }
+                            username = username.Trim();
+                            if (string.IsNullOrEmpty(username))
+                            {
+                                username = SqlFunctions.GetLinkedAccount(e.Message.Author.Id.ToString());
+                            }
                         }
                         if (string.IsNullOrEmpty(username))
                         {
@@ -137,18 +143,23 @@ namespace DiscordBot
                     if (message.ToLower().StartsWith("gains".ToLower()))
                     {
                         Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                        
-                        string[] mArray = message.Split(' ');
                         string username = "";
-                        for (int i = 1; i < mArray.Length; i++)
+                        if (e.MentionedUsers.Count() > 0)
                         {
-                            username += mArray[i] + " ";
+                            username = SqlFunctions.GetLinkedAccount(e.MentionedUsers[0].Id.ToString());
                         }
-                        username = username.Trim();
-                        if (string.IsNullOrEmpty(username))
+                        else
                         {
-                            username = SqlFunctions.GetLinkedAccount(e.Message.Author.Id.ToString());
-
+                            string[] mArray = message.Split(' ');
+                            for (int i = 1; i < mArray.Length; i++)
+                            {
+                                username += mArray[i] + " ";
+                            }
+                            username = username.Trim();
+                            if (string.IsNullOrEmpty(username))
+                            {
+                                username = SqlFunctions.GetLinkedAccount(e.Message.Author.Id.ToString());
+                            }
                         }
                         if (string.IsNullOrEmpty(username))
                         {
@@ -187,18 +198,23 @@ namespace DiscordBot
                     if (message.ToLower().StartsWith("gainz".ToLower()))
                     {
                         Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                      
-                        string[] mArray = message.Split(' ');
                         string username = "";
-                        for (int i = 1; i < mArray.Length; i++)
+                        if (e.MentionedUsers.Count() > 0)
                         {
-                            username += mArray[i] + " ";
+                            username = SqlFunctions.GetLinkedAccount(e.MentionedUsers[0].Id.ToString());
                         }
-                        username = username.Trim();
-                        if (string.IsNullOrEmpty(username))
+                        else
                         {
-                            username = SqlFunctions.GetLinkedAccount(e.Message.Author.Id.ToString());
-
+                            string[] mArray = message.Split(' ');
+                            for (int i = 1; i < mArray.Length; i++)
+                            {
+                                username += mArray[i] + " ";
+                            }
+                            username = username.Trim();
+                            if (string.IsNullOrEmpty(username))
+                            {
+                                username = SqlFunctions.GetLinkedAccount(e.Message.Author.Id.ToString());
+                            }
                         }
                         if (string.IsNullOrEmpty(username))
                         {
@@ -257,7 +273,7 @@ namespace DiscordBot
                     if (message.ToLower().StartsWith("new".ToLower()))
                     {
                         Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                        
+
                         string[] mArray = message.Split(' ');
                         string username = "";
                         for (int i = 1; i < mArray.Length; i++)
@@ -296,7 +312,7 @@ namespace DiscordBot
                     }
                     if (message.ToLower().StartsWith("link".ToLower()))
                     {
-                        Console.WriteLine(DateTime.Now + ": " + e.Message.Content);                        
+                        Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
                         string[] mArray = message.Split(' ');
                         string username = "";
                         for (int i = 1; i < mArray.Length; i++)
@@ -304,11 +320,32 @@ namespace DiscordBot
                             username += mArray[i] + " ";
                         }
                         username = username.Trim();
-                        SqlFunctions.CreateLink_DiscordAcc_Rs3Acc(username, e.Message.Author.Id.ToString());
-                        await functionsRS.RegisterPlayer(username);
 
-                        Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + username + " Linked with discord account");
-                        await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + username + " Linked with discord account");
+                        rs3Player = await functionsRS.RegisterPlayer(username);
+                        if (rs3Player.Error != null)
+                        {
+                            if (!string.IsNullOrEmpty(rs3Player.Error))
+                            {
+                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + rs3Player.Error + "");
+                            }
+                            else
+                            {
+                                BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                                AnswerFormats answerFormats = new AnswerFormats();
+                                BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
+                                int xy = BotAnswer.Length;
+                                Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
+                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                            }
+                        }
+                        else
+                        {
+                            SqlFunctions.CreateLink_DiscordAcc_Rs3Acc(username, e.Message.Author.Id.ToString());
+
+
+                            Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + username + " Linked with discord account");
+                            await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + username + " Linked with discord account");
+                        }
                     }
                     #endregion
                 }
