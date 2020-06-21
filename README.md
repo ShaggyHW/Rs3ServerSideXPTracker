@@ -8,7 +8,7 @@ CheckXp Gain
 
 CheckXp Gain for users
 
-!shwListgainz username;username;....;username
+!shwListgainz username;username;....;username (Currently Disabled!)
 
 StartTracking New User
 
