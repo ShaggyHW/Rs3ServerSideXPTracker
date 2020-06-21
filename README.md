@@ -1,23 +1,41 @@
 # Rs3ServerSideXPTracker
 
+BotPrefix - Every Message staring with !SHW will be considered a bot command
+
+!SHW
+
 Commands:
 
-CheckXp Gain
+gainz
 
-!SHWgainz username
+Usage - !SHW gainz username
 
-CheckXp Gain for users
+Reponds with the xp gained since the last time the command was used
 
-!shwListgainz username;username;....;username (Currently Disabled!)
+gains
 
-StartTracking New User
+Usage - !SHW gainz username
 
-!SHWnew username
+Same as Gainz
 
-Check Current Stats
+listgainz 
 
-!shwstats username
+Usage - !SHW listgainz username;username;....;username (Currently Disabled!)
 
-Check BotCommands
+Same as gainz/gains but for multiple users
 
-!rs3tracker commands
+new
+
+Usage - !SHW new username
+
+Start tracking a new Account
+
+stats 
+
+Usage - !SHW stats username
+
+Responds with the current xp and levels
+
+!SHW commands
+
+Responds with a link to the list of Commands
