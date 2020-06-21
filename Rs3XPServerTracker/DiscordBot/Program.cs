@@ -30,7 +30,7 @@ namespace DiscordBot
         static async Task MainAsync(string[] args)
         {
             DiscordConfiguration discordConfiguration = new DiscordConfiguration();
-            discordConfiguration.Token = "NzIzOTY4MTU2OTg0NDEwMjI0.Xu_VPQ.Vr0GktzLSH1PYkvUHh9BxUdF3mM";
+            discordConfiguration.Token = "";
 
             discordConfiguration.TokenType = TokenType.Bot;
             var discord = new DiscordClient(discordConfiguration);
