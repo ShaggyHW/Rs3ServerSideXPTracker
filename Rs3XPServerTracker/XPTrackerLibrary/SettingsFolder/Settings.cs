@@ -19,6 +19,7 @@ namespace XPTrackerLibrary.SettingsFolder
         public string Rs3Player_DiscordAccTable = "tbl_RS3_Discord";
         public string SkillingCompTable = "tbl_SkillingComp";
         public string BotAdminTable = "tbl_Admin";
+        public string BotHostsTable = "tbl_Hosts";
         public SettingsClasses settingsClasses = new SettingsClasses();
 
         public class Values

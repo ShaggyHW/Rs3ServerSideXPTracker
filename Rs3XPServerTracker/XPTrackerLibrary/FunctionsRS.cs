@@ -32,6 +32,7 @@ namespace XPTrackerLibrary
             tableCreatorClass.createTables(settings.Rs3Player_DiscordAccTable);
             tableCreatorClass.createTables(settings.SkillingCompTable);
             tableCreatorClass.createTables(settings.BotAdminTable);
+            tableCreatorClass.createTables(settings.BotHostsTable);
         }
 
         public async Task<MyClasses.Rs3Player> RegisterPlayer(string Username)

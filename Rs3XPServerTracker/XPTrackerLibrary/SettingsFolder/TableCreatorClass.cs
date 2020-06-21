@@ -49,26 +49,38 @@ namespace XPTrackerLibrary.SettingsFolder
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();
                 }
-                if (table == "tbl_RS3_Discord")
-                {
-                   
-                }
-
-                if (table == "tbl_SkillingComp")
-                {
-                    mySqlConnection.Close();
-                    mySqlConnection.Open();
-                    query = "CREATE TABLE `"+table+"` (`CompName` VARCHAR(255) NOT NULL, `EndDate` DATETIME NOT NULL, `StartDate` DATETIME NOT NULL, PRIMARY KEY(`CompName`)) COLLATE = 'utf8_general_ci'; ";
-                    cmd = new MySqlCommand(query, mySqlConnection);
-                    cmd.ExecuteNonQuery();
-                    mySqlConnection.Close();
-                }
-
-                if(table == "tbl_Admin")
+                if (table == "tbl_Hosts")
                 {
                     mySqlConnection.Close();
                     mySqlConnection.Open();
                     query = "CREATE TABLE " + table + " (DiscordID varchar(255))";
+                    cmd = new MySqlCommand(query, mySqlConnection);
+                    cmd.ExecuteNonQuery();
+                    mySqlConnection.Close();
+                }
+                if (table == "tbl_SkillingComp")
+                {
+                    mySqlConnection.Close();
+                    mySqlConnection.Open();
+                    query = "CREATE TABLE `" + table + "` (`CompName` VARCHAR(255) NOT NULL, `Status` VARCHAR(255) NOT NULL, `EndDate` DATETIME NOT NULL, `StartDate` DATETIME NOT NULL, PRIMARY KEY(`CompName`)) COLLATE = 'utf8_general_ci'; ";
+                    cmd = new MySqlCommand(query, mySqlConnection);
+                    cmd.ExecuteNonQuery();
+                    mySqlConnection.Close();
+                }
+                if (table == "tbl_Admin")
+                {
+                    mySqlConnection.Close();
+                    mySqlConnection.Open();
+                    query = "CREATE TABLE " + table + " (DiscordID varchar(255))";
+                    cmd = new MySqlCommand(query, mySqlConnection);
+                    cmd.ExecuteNonQuery();
+                    mySqlConnection.Close();
+                }
+                if(table == "tbl_RS3_Discord")
+                {
+                    mySqlConnection.Close();
+                    mySqlConnection.Open();
+                    query = "CREATE TABLE `"+table+"` (`Username` VARCHAR(255) NULL DEFAULT NULL,	`DiscordID` VARCHAR(255) NULL DEFAULT NULL) COLLATE = 'utf8_general_ci' ENGINE = InnoDB; ";
                     cmd = new MySqlCommand(query, mySqlConnection);
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();

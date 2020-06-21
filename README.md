@@ -3,54 +3,80 @@
 BEFORE CHECKING STATS OR GAINS YOU SHOULD LOBBY SO THE RSAPI UPDATES YOUR XP VALUES!
 
 
-
 BotPrefix - Every Message staring with !SHW will be considered a bot command
 
-!SHW
+	!SHW
 
-Commands:
 
-gainz
+ADMIN COMMANDS:
 
-Usage - !SHW gainz username
+[]
 
-username not required IF command link was used previously
-Reponds with the xp gained since the last time the command was used
 
-gains
+HOST
 
-Usage - !SHW gainz username
+	Host Prefix: 
 
-username not required IF command link was used previously
-Same as Gainz
+		host
 
-listgainz 
+		Usage - !SHW host command
 
-Usage - !SHW listgainz username;username;....;username (Currently Disabled!)
+	COMMANDS:
+		
+		new
 
-Same as gainz/gains but for multiple users
+			Usage - !SHW host new "CompetitionName"
 
-new
 
-Usage - !SHW new username
+USER
 
-Start tracking a new Account
+	COMMANDS:
 
-stats 
+		gainz
 
-Usage - !SHW stats username
+			Usage - !SHW gainz username
 
-Responds with the current xp and levels
+			username not required IF command link was used previously
 
-commands
+		Reponds with the xp gained since the last time the command was used
 
-Usage - !SHW commands
+		gains
 
-Responds with a link to the list of Commands
+			Usage - !SHW gainz username
 
-link
+			username not required IF command link was used previously
+		
+		Same as Gainz
 
-Usage - !SHW link username
+		listgainz 
 
-Creates a link between the discord account that used the command and the rs3 username
+			Usage - !SHW listgainz username;username;....;username (Currently Disabled!)
+
+		Same as gainz/gains but for multiple users
+
+		new
+
+			Usage - !SHW new username
+
+		Start tracking a new Account
+
+		stats 
+
+			Usage - !SHW stats username
+
+			username not required IF command link was used previously
+
+		Responds with the current xp and levels
+
+		commands
+
+			Usage - !SHW commands
+
+		Responds with a link to the list of Commands
+
+		link
+
+			Usage - !SHW link username
+
+		Creates a link between the discord account that used the command and the rs3 username
 

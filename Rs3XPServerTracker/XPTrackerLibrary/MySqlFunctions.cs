@@ -16,6 +16,67 @@ namespace XPTrackerLibrary
 
 
         }
+        public string DelBotHosts(string discordID)
+        {
+            var mysqlSettings = settings.GetMySqlSettings();
+            string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            mySqlConnection.Open();
+            string query = "SELECT * From " + settings.BotHostsTable + " Where DiscordID='" + discordID + "'";
+            var cmd = new MySqlCommand(query, mySqlConnection);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                mySqlConnection.Close();
+                query = "DELETE From " + settings.BotHostsTable + " Where DiscordID='" + discordID + "'";
+                mySqlConnection.Open();
+                cmd = new MySqlCommand(query, mySqlConnection);
+                cmd.ExecuteReader();
+
+                return " Was Removed from Hosts";
+            }
+            mySqlConnection.Close();
+
+            return " Was Not an Host";
+        }
+        public bool GetBotHosts(string discordID)
+        {
+            var mysqlSettings = settings.GetMySqlSettings();
+            string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            mySqlConnection.Open();
+            string query = "SELECT * From " + settings.BotHostsTable + " Where DiscordID='" + discordID + "'";
+            var cmd = new MySqlCommand(query, mySqlConnection);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                return true;
+            }
+            mySqlConnection.Close();
+            return false;
+        }
+        public string AddBotHosts(string discordID)
+        {
+            var mysqlSettings = settings.GetMySqlSettings();
+            string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            mySqlConnection.Open();
+            string query = "SELECT * From " + settings.BotHostsTable + " Where DiscordID='" + discordID + "'";
+            var cmd = new MySqlCommand(query, mySqlConnection);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                return " is already Host";
+            }
+            mySqlConnection.Close();
+            mySqlConnection.Open();
+            query = "Insert Into " + settings.BotHostsTable + " (DiscordID) " +
+                 "VALUES ('" + discordID + "')";
+            cmd = new MySqlCommand(query, mySqlConnection);
+            cmd.ExecuteNonQuery();
+            mySqlConnection.Close();
+            return " added to Host Group";
+        }
         public string DelBotAdmins(string discordID)
         {
             var mysqlSettings = settings.GetMySqlSettings();
