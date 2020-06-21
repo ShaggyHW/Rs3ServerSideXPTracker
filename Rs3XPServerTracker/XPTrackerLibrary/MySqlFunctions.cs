@@ -11,27 +11,10 @@ namespace XPTrackerLibrary
     {
         SettingsFolder.Settings settings = new SettingsFolder.Settings();
 
-        public string CreateSkillingComp(MyClasses.CompSettings compSettings)
+        public void CreateSkillingComp()
         {
-            var mysqlSettings = settings.GetMySqlSettings();
-            string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
-            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
-            mySqlConnection.Open();
-            string query = "SELECT * From " + settings.SkillingCompTable + " Where CompName='" + compSettings.Name + "'";
-            var cmd = new MySqlCommand(query, mySqlConnection);
-            var reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            {
-                return " Already Exists";
-            }
-            mySqlConnection.Close();
-            mySqlConnection.Open();
-            query = "Insert Into " + settings.SkillingCompTable + " (CompName,Status,EndDate,StartDate) " +
-                 "VALUES ('" + compSettings.Name + "','"+compSettings.status+"','"+compSettings.end+"','"+compSettings.start+"')";
-            cmd = new MySqlCommand(query, mySqlConnection);
-            cmd.ExecuteNonQuery();
-            mySqlConnection.Close();
-            return " Created";
+
+
         }
         public string DelBotHosts(string discordID)
         {

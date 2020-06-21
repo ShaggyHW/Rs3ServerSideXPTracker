@@ -13,13 +13,6 @@ namespace XPTrackerLibrary.MyClasses
         public string Error { get; set; }
     }
 
-    public class CompSettings
-    {
-        public string Name { get; set; }
-        public string status { get; set; }
-        public string start { get; set; }
-        public string end { get; set; }
-    }
     public class skillvalues
     {
         public short Level { get; set; }
