@@ -10,6 +10,7 @@ namespace XPTrackerLibrary.MyClasses
     {
         public string Name { get; set; }
         public List<skillvalues> Skillvalues { get; set; }
+        public string Error { get; set; }
     }
 
     public class skillvalues

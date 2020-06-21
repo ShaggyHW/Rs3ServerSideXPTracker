@@ -26,12 +26,12 @@ namespace DiscordBot
         {
             DiscordConfiguration discordConfiguration = new DiscordConfiguration();
             discordConfiguration.Token = "";
-            discordConfiguration.TokenType = TokenType.Bot; 
+            discordConfiguration.TokenType = TokenType.Bot;
             var discord = new DiscordClient(discordConfiguration);
             string BotAnswer = "";
             discord.MessageCreated += async e =>
             {
-                if (e.Message.Content.ToLower().StartsWith("!SHWStats".ToLower()))
+                if (e.Message.Content.ToLower().StartsWith("!SHWgainz".ToLower()))
                 {
                     Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
                     string message = e.Message.Content.ToLower();
@@ -41,54 +41,98 @@ namespace DiscordBot
                     {
                         username += mArray[i] + " ";
                     }
-                    username.Trim();
+                    username = username.Trim();
                     rs3Player = await functionsRS.Calculate(username);
-                    BotAnswer = JsonConvert.SerializeObject(rs3Player);
-                    AnswerFormats answerFormats = new AnswerFormats();
-                    BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player);
-                    int xy = BotAnswer.Length;
-                    Console.WriteLine("<@!"+e.Message.Author.Id+ ">" + "\n" + BotAnswer);
-                    var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">"+"\n" + BotAnswer + "");
-                }
 
-                if (e.Message.Content.ToLower().StartsWith("!Dev".ToLower()))
-                {
-                    Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                    string message = e.Message.Content.ToLower();
-                    message = message.Remove(0,5);
-                    string username = "";
-                    string[] Multiple = message.Split(';');
-                    foreach(string user in Multiple)
+                    if (rs3Player.Error != null)
                     {
-                        username = user;
-                        rs3Player = await functionsRS.Calculate(username);
-                        if (rs3Player != null)
+                        if (!string.IsNullOrEmpty(rs3Player.Error))
+                        {
+                            await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + rs3Player.Error + "");
+                        }
+                        else
                         {
                             BotAnswer = JsonConvert.SerializeObject(rs3Player);
                             AnswerFormats answerFormats = new AnswerFormats();
-                            BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player);
+                            BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player,"Gainz");
                             int xy = BotAnswer.Length;
                             Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
                             var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
                         }
                     }
+                    else
+                    {
+                        BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                        AnswerFormats answerFormats = new AnswerFormats();
+                        BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player,"Gainz");
+                        int xy = BotAnswer.Length;
+                        Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
+                        var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                    }
+                }
+                if (e.Message.Content.ToLower().StartsWith("!shwListgainz".ToLower()))
+                {
+                    Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
+                    string message = e.Message.Content.ToLower();
+                    message = message.Remove(0, 14);
+                    string[] users = message.Split(';');
+                    foreach (string user in users)
+                    {
+                        rs3Player = await functionsRS.Calculate(user);
+                        if (rs3Player != null)
+                        {
+                            BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                            AnswerFormats answerFormats = new AnswerFormats();
+                            BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player,"Gainz");
+                            int xy = BotAnswer.Length;
+                            Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
+                            var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                        }
+                    }
+                }
+
+                if (e.Message.Content.ToLower().StartsWith("!SHWnew".ToLower()))
+                {
+                    Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
+                    string message = e.Message.Content.ToLower();
                     string[] mArray = message.Split(' ');
-                    
-                    //for (int i = 1; i < mArray.Length; i++)
-                    //{
-                    //    username += mArray[i] + " ";
-                    //}
-                    //username.Trim();
-                   
+                    string username = "";
+                    for (int i = 1; i < mArray.Length; i++)
+                    {
+                        username += mArray[i] + " ";
+                    }
+                    username = username.Trim();
+                    var rs3Player = await functionsRS.RegisterPlayer(username);
+
+                    if (rs3Player.Error != null)
+                    {
+                        if (!string.IsNullOrEmpty(rs3Player.Error))
+                        {
+                            await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + rs3Player.Error + "");
+                        }
+                        else
+                        {
+                            BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                            AnswerFormats answerFormats = new AnswerFormats();
+                            BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
+                            int xy = BotAnswer.Length;
+                            Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
+                            var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                        }
+                    }
+                    else
+                    {
+                        BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                        AnswerFormats answerFormats = new AnswerFormats();
+                        BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
+                        int xy = BotAnswer.Length;
+                        Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
+                        var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                    }
+
                 }
 
 
-
-
-
-
-
-                //await e.Message.RespondAsync("pong!");
             };
             await discord.ConnectAsync();
             await Task.Delay(-1);

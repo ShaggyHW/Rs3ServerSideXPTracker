@@ -14,5 +14,6 @@
         <TextBox x:Name="MYSQLDB" HorizontalAlignment="Left" Height="23" Margin="579,71,0,0" TextWrapping="Wrap" Text="DB" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="MYSQLUSER" HorizontalAlignment="Left" Height="23" Margin="434,143,0,0" TextWrapping="Wrap" Text="User" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="MYSQLPW" HorizontalAlignment="Left" Height="23" Margin="579,143,0,0" TextWrapping="Wrap" Text="PW" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Button2" HorizontalAlignment="Left" Margin="182,273,0,0" VerticalAlignment="Top" Width="75" Click="Button2_Click"/>
     </Grid>
 </Window>

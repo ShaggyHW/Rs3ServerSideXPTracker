@@ -1,7 +1,9 @@
 # Rs3ServerSideXPTracker
 
 Commands:
-
-!shwstats username
-
-!Dev username;username;....;username
+CheckXp Gain
+!SHWgainz username
+CheckXp Gain for users
+!shwListgainz username;username;....;username
+StartTracking New User
+!SHWnew username

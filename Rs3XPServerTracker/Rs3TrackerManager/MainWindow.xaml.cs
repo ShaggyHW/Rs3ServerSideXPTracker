@@ -16,6 +16,9 @@ using XPTrackerLibrary;
 using XPTrackerLibrary.SettingsFolder;
 using Newtonsoft;
 using Newtonsoft.Json;
+using System.Diagnostics;
+using System.Reflection;
+using System.IO;
 
 namespace Rs3TrackerManager
 {
@@ -47,6 +50,13 @@ namespace Rs3TrackerManager
             mySqlSettings.password = MYSQLPW.Text;
 
             settings.SaveMySQLSettings(mySqlSettings);
+        }
+
+        private void Button2_Click(object sender, RoutedEventArgs e)
+        {
+            var location = new Uri(Assembly.GetEntryAssembly().GetName().CodeBase);
+            var BotPath = new FileInfo(location.AbsolutePath).Directory.FullName+ "\\DiscordBot.exe";
+            Process.Start(BotPath);
         }
     }
 }

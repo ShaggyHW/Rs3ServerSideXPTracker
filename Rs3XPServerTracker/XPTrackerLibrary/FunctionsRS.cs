@@ -25,12 +25,40 @@ namespace XPTrackerLibrary
         static SettingsFolder.Settings settings = new SettingsFolder.Settings();
         static FunctionsRS()
         {
-           
+
             SettingsFolder.TableCreatorClass tableCreatorClass = new SettingsFolder.TableCreatorClass();
             tableCreatorClass.createTables(settings.Rs3PlayerTable);
             tableCreatorClass.createTables(settings.Rs3PlayerSkillsTable);
             tableCreatorClass.createTables(settings.Rs3PlayerSkillGainzTable);
         }
+
+        public async Task<MyClasses.Rs3Player> RegisterPlayer(string Username)
+        {
+            MyClasses.Rs3Player rs3PlayerAPI = await Rs3API.GetRs3Player(Username);
+            MyClasses.Rs3Player rs3PlayerDB = MySqlFunctions.GetRs3PlayerDB(Username);
+            if (rs3PlayerAPI == null)
+            {
+                rs3PlayerAPI = new MyClasses.Rs3Player();
+                rs3PlayerAPI.Error = "Player \"" + Username + "\" Doesn's Exist in the RS Database!";
+                return rs3PlayerAPI;
+            }
+            else
+            {
+                if (rs3PlayerDB != null)
+                {
+                    rs3PlayerDB = new MyClasses.Rs3Player();
+                    rs3PlayerDB.Error = "Player \"" + Username + "\" is Already Being Tracked!";
+                    return rs3PlayerDB;
+                }
+                else
+                {
+                    MySqlFunctions.InsertIntoDBPlayers(rs3PlayerAPI, true);
+                    return rs3PlayerAPI;
+                }
+            }
+        }
+
+
 
         public async Task<MyClasses.Rs3Player> Calculate(string Username)
         {
@@ -39,13 +67,17 @@ namespace XPTrackerLibrary
             MyClasses.Rs3Player rs3PlayerGainz = new MyClasses.Rs3Player();
             if (rs3PlayerAPI == null)
             {
-                return null;
+                rs3PlayerAPI = new MyClasses.Rs3Player();
+                rs3PlayerAPI.Error = "Player \"" + Username + "\" Doesn's Exist in the RS Database!";
+                return rs3PlayerAPI;
             }
             if (rs3PlayerDB == null)
             {
                 //New User Add him to DB
                 MySqlFunctions.InsertIntoDBPlayers(rs3PlayerAPI, true);
-                return null;
+                rs3PlayerDB = new MyClasses.Rs3Player();
+                rs3PlayerDB.Error = "Player \"" + Username + "\" Doesn's Exist in the Bot Database!";
+                return rs3PlayerDB;
             }
             else
             {
@@ -55,7 +87,7 @@ namespace XPTrackerLibrary
                 //old user Calculate and Update Info
                 foreach (MyClasses.skillvalues skillvaluesAPI in rs3PlayerAPI.Skillvalues)
                 {
-                    foreach(MyClasses.skillvalues skillvaluesDB in rs3PlayerDB.Skillvalues)
+                    foreach (MyClasses.skillvalues skillvaluesDB in rs3PlayerDB.Skillvalues)
                     {
                         if (skillvaluesAPI.ID == skillvaluesDB.ID)
                         {
@@ -70,7 +102,7 @@ namespace XPTrackerLibrary
                 //MySqlFunctions.InsertIntoDBPlayers(rs3PlayerAPI, false);
 
                 rs3PlayerGainz = MySqlFunctions.GetRs3PlayerGainz(Username);
-                
+
             }
             return rs3PlayerGainz;
         }
