@@ -90,7 +90,7 @@ namespace DiscordBot
                         
                         string[] mArray = message.Split(' ');
                         string username = "";
-                        for (int i = 2; i < mArray.Length; i++)
+                        for (int i = 1; i < mArray.Length; i++)
                         {
                             username += mArray[i] + " ";
                         }
@@ -140,7 +140,7 @@ namespace DiscordBot
                         
                         string[] mArray = message.Split(' ');
                         string username = "";
-                        for (int i = 2; i < mArray.Length; i++)
+                        for (int i = 1; i < mArray.Length; i++)
                         {
                             username += mArray[i] + " ";
                         }
@@ -190,7 +190,7 @@ namespace DiscordBot
                       
                         string[] mArray = message.Split(' ');
                         string username = "";
-                        for (int i = 2; i < mArray.Length; i++)
+                        for (int i = 1; i < mArray.Length; i++)
                         {
                             username += mArray[i] + " ";
                         }
@@ -260,7 +260,7 @@ namespace DiscordBot
                         
                         string[] mArray = message.Split(' ');
                         string username = "";
-                        for (int i = 2; i < mArray.Length; i++)
+                        for (int i = 1; i < mArray.Length; i++)
                         {
                             username += mArray[i] + " ";
                         }
@@ -299,7 +299,7 @@ namespace DiscordBot
                         Console.WriteLine(DateTime.Now + ": " + e.Message.Content);                        
                         string[] mArray = message.Split(' ');
                         string username = "";
-                        for (int i = 2; i < mArray.Length; i++)
+                        for (int i = 1; i < mArray.Length; i++)
                         {
                             username += mArray[i] + " ";
                         }
