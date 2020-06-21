@@ -13,3 +13,11 @@ CheckXp Gain for users
 StartTracking New User
 
 !SHWnew username
+
+Check Current Stats
+
+!shwstats username
+
+Check BotCommands
+
+!rs3tracker commands

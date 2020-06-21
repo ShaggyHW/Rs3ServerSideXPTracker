@@ -58,9 +58,24 @@ namespace XPTrackerLibrary
             }
         }
 
+        public async Task<MyClasses.Rs3Player> GetCurrentStats(string Username)
+        {
+            MyClasses.Rs3Player rs3PlayerAPI = await Rs3API.GetRs3Player(Username);
+            if (rs3PlayerAPI != null)
+            {
+                return rs3PlayerAPI;
+            }
+            else
+            {
+                rs3PlayerAPI = new MyClasses.Rs3Player();
+                rs3PlayerAPI.Error = "Player \"" + Username + "\" Doesn's Exist in the RS Database!";
+                return rs3PlayerAPI;
+            }
+        }
 
 
-        public async Task<MyClasses.Rs3Player> Calculate(string Username)
+
+            public async Task<MyClasses.Rs3Player> Calculate(string Username)
         {
             MyClasses.Rs3Player rs3PlayerAPI = await Rs3API.GetRs3Player(Username);
             MyClasses.Rs3Player rs3PlayerDB = MySqlFunctions.GetRs3PlayerDB(Username);

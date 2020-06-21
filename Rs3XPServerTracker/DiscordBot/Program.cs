@@ -31,17 +31,50 @@ namespace DiscordBot
             string BotAnswer = "";
             discord.MessageCreated += async e =>
             {
-                if (e.Message.Content.ToLower().StartsWith("!rs3tracker command".ToLower()))
+                if (e.Message.Content.ToLower().StartsWith("!rs3tracker commands".ToLower()))
                 {
                     await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n https://github.com/ShaggyHW/Rs3ServerSideXPTracker/blob/master/README.md");
                 }
                 if (e.Message.Content.ToLower().StartsWith("!SHWstats".ToLower()))
                 {
-
+                    string message = e.Message.Content.ToLower();
+                    string[] mArray = message.Split(' ');
+                    string username = "";
+                    for (int i = 1; i < mArray.Length; i++)
+                    {
+                        username += mArray[i] + " ";
+                    }
+                    username = username.Trim();
+                    rs3Player = await functionsRS.GetCurrentStats(username);
+                    if (rs3Player.Error != null)
+                    {
+                        if (!string.IsNullOrEmpty(rs3Player.Error))
+                        {
+                            await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + rs3Player.Error + "");
+                        }
+                        else
+                        {
+                            BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                            AnswerFormats answerFormats = new AnswerFormats();
+                            BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
+                            int xy = BotAnswer.Length;
+                            Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
+                            var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                        }
+                    }
+                    else
+                    {
+                        BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                        AnswerFormats answerFormats = new AnswerFormats();
+                        BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
+                        int xy = BotAnswer.Length;
+                        Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
+                        var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                    }
                 }
 
 
-                    if (e.Message.Content.ToLower().StartsWith("!SHWgains".ToLower()))
+                if (e.Message.Content.ToLower().StartsWith("!SHWgains".ToLower()))
                 {
                     Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
                     string message = e.Message.Content.ToLower();
