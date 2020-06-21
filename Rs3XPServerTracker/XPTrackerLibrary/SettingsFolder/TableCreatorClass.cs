@@ -17,21 +17,21 @@ namespace XPTrackerLibrary.SettingsFolder
             string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
             MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
             mySqlConnection.Open();
-            string query = "SELECT * FROM information_schema.tables WHERE table_schema = '"+mySqlConnection.Database+"' AND table_name = '"+table+"' LIMIT 1";
+            string query = "SELECT * FROM information_schema.tables WHERE table_schema = '" + mySqlConnection.Database + "' AND table_name = '" + table + "' LIMIT 1";
             var cmd = new MySqlCommand(query, mySqlConnection);
             var reader = cmd.ExecuteReader();
             if (!reader.HasRows)
             {
-                if(table == "tbl_RS3Player")
+                if (table == "tbl_RS3Player")
                 {
                     mySqlConnection.Close();
-                    mySqlConnection.Open();                    
-                    query = "CREATE TABLE "+table+" (Name varchar(255))";
+                    mySqlConnection.Open();
+                    query = "CREATE TABLE " + table + " (Name varchar(255))";
                     cmd = new MySqlCommand(query, mySqlConnection);
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();
                 }
-                if(table == "tbl_Rs3PlayerSkillsTable")
+                if (table == "tbl_Rs3PlayerSkillsTable")
                 {
                     mySqlConnection.Close();
                     mySqlConnection.Open();
@@ -40,7 +40,7 @@ namespace XPTrackerLibrary.SettingsFolder
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();
                 }
-                if(table== "tbl_Rs3PlayerSkillGainzTable")
+                if (table == "tbl_Rs3PlayerSkillGainzTable")
                 {
                     mySqlConnection.Close();
                     mySqlConnection.Open();
@@ -49,15 +49,29 @@ namespace XPTrackerLibrary.SettingsFolder
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();
                 }
-                if(table== "tbl_RS3_Discord")
+                if (table == "tbl_RS3_Discord")
                 {
-                    mySqlConnection.Close();
-                    mySqlConnection.Open();
-                    query = "CREATE TABLE " + table + " (Username varchar(255),DiscordID varchar(255))";
-                    cmd = new MySqlCommand(query, mySqlConnection);
-                    cmd.ExecuteNonQuery();
-                    mySqlConnection.Close();
+                   
+                }
 
+                if (table == "tbl_SkillingComp")
+                {
+                    mySqlConnection.Close();
+                    mySqlConnection.Open();
+                    query = "CREATE TABLE `"+table+"` (`CompName` VARCHAR(255) NOT NULL, `EndDate` DATETIME NOT NULL, `StartDate` DATETIME NOT NULL, PRIMARY KEY(`CompName`)) COLLATE = 'utf8_general_ci'; ";
+                    cmd = new MySqlCommand(query, mySqlConnection);
+                    cmd.ExecuteNonQuery();
+                    mySqlConnection.Close();
+                }
+
+                if(table == "tbl_Admin")
+                {
+                    mySqlConnection.Close();
+                    mySqlConnection.Open();
+                    query = "CREATE TABLE " + table + " (DiscordID varchar(255))";
+                    cmd = new MySqlCommand(query, mySqlConnection);
+                    cmd.ExecuteNonQuery();
+                    mySqlConnection.Close();
                 }
             }
         }

@@ -17,6 +17,8 @@ namespace XPTrackerLibrary.SettingsFolder
         public string Rs3PlayerSkillsTable = "tbl_Rs3PlayerSkillsTable";
         public string Rs3PlayerSkillGainzTable = "tbl_Rs3PlayerSkillGainzTable";
         public string Rs3Player_DiscordAccTable = "tbl_RS3_Discord";
+        public string SkillingCompTable = "tbl_SkillingComp";
+        public string BotAdminTable = "tbl_Admin";
         public SettingsClasses settingsClasses = new SettingsClasses();
 
         public class Values
@@ -24,9 +26,6 @@ namespace XPTrackerLibrary.SettingsFolder
             public string option { get; set; }
             public string value { get; set; }
         }
-
-
-
         public Values getValues()
         {
             Values values = new Values();
@@ -34,7 +33,6 @@ namespace XPTrackerLibrary.SettingsFolder
 
             return values;
         }
-
         public void SaveMySQLSettings(MySqlSettings mysqlSettings)
         {
             var executingPath = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase);
@@ -57,7 +55,6 @@ namespace XPTrackerLibrary.SettingsFolder
             iniData["SQLSettings"]["username"] = mysqlSettings.username;
             parser.WriteFile(iniFile, iniData);
         }
-
         public MySqlSettings GetMySqlSettings()
         {
             var executingPath = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase);

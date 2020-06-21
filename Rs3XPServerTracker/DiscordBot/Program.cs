@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using XPTrackerLibrary;
 using XPTrackerLibrary.MyClasses;
 using DSharpPlus;
+using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
+using DSharpPlus.Exceptions;
+using DSharpPlus.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft;
@@ -29,19 +33,61 @@ namespace DiscordBot
             discordConfiguration.Token = "";
             discordConfiguration.TokenType = TokenType.Bot;
             var discord = new DiscordClient(discordConfiguration);
+            string[] role;
             string BotAnswer = "";
 
             discord.MessageCreated += async e =>
             {
                 if (e.Message.Content.ToLower().StartsWith("!SHW".ToLower()))
                 {
-                    if (e.Message.Content.ToLower().Contains("commands".ToLower()))
+                    string message = e.Message.Content.ToLower();
+                    message = message.Replace("!SHW".ToLower(), string.Empty);
+                    message = message.Trim();
+                    bool isAdmin = SqlFunctions.GetBotAdmins(e.Author.Id.ToString());
+                    #region AdminCommands
+                    if (message.ToLower().StartsWith("add_admin".ToLower()))
                     {
+                        if (isAdmin)
+                        {
+                            var mentionedUser = e.Message.MentionedUsers;
+                            foreach (DiscordUser discordUser in mentionedUser)
+                            {
+                                string response = SqlFunctions.AddBotAdmins(discordUser.Id.ToString());
+                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n " + discordUser.Username + response);
+                            }
+                        }
+                        else
+                        {
+                            await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n You do Not Have Permissions to Use this Command");
+                        }
+                    }
+                    if (message.ToLower().StartsWith("del_admin".ToLower()))
+                    {
+                        if (isAdmin)
+                        {
+                            var mentionedUser = e.Message.MentionedUsers;
+                            foreach (DiscordUser discordUser in mentionedUser)
+                            {
+                                string response = SqlFunctions.DelBotAdmins(discordUser.Id.ToString());
+                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n " + discordUser.Username + response);
+                            }
+                        }
+                        else
+                        {
+                            await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n You do Not Have Permissions to Use this Command");
+                        }
+                    }
+                    #endregion
+
+
+                    #region UserCommands
+                    if (message.ToLower().StartsWith("commands".ToLower()))
+                    {                        
                         await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n https://github.com/ShaggyHW/Rs3ServerSideXPTracker/blob/master/README.md");
                     }
-                    if (e.Message.Content.ToLower().Contains("stats".ToLower()))
+                    if (message.ToLower().StartsWith("stats".ToLower()))
                     {
-                        string message = e.Message.Content.ToLower();
+                        
                         string[] mArray = message.Split(' ');
                         string username = "";
                         for (int i = 2; i < mArray.Length; i++)
@@ -74,7 +120,7 @@ namespace DiscordBot
                                     BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
                                     int xy = BotAnswer.Length;
                                     Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                    var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                                    await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
                                 }
                             }
                             else
@@ -84,14 +130,14 @@ namespace DiscordBot
                                 BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
                                 int xy = BotAnswer.Length;
                                 Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
                             }
                         }
                     }
-                    if (e.Message.Content.ToLower().Contains("gains".ToLower()))
+                    if (message.ToLower().StartsWith("gains".ToLower()))
                     {
                         Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                        string message = e.Message.Content.ToLower();
+                        
                         string[] mArray = message.Split(' ');
                         string username = "";
                         for (int i = 2; i < mArray.Length; i++)
@@ -124,7 +170,7 @@ namespace DiscordBot
                                     BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Gainz");
                                     int xy = BotAnswer.Length;
                                     Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                    var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                                    await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
                                 }
                             }
                             else
@@ -134,14 +180,14 @@ namespace DiscordBot
                                 BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Gainz");
                                 int xy = BotAnswer.Length;
                                 Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
                             }
                         }
                     }
-                    if (e.Message.Content.ToLower().Contains("gainz".ToLower()))
+                    if (message.ToLower().StartsWith("gainz".ToLower()))
                     {
                         Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                        string message = e.Message.Content.ToLower();
+                      
                         string[] mArray = message.Split(' ');
                         string username = "";
                         for (int i = 2; i < mArray.Length; i++)
@@ -174,7 +220,7 @@ namespace DiscordBot
                                     BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Gainz");
                                     int xy = BotAnswer.Length;
                                     Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                    var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                                    await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
                                 }
                             }
                             else
@@ -184,16 +230,15 @@ namespace DiscordBot
                                 BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Gainz");
                                 int xy = BotAnswer.Length;
                                 Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
                             }
                         }
                     }
-                    if (e.Message.Content.ToLower().Contains("listgainz".ToLower()))
+                    if (message.ToLower().StartsWith("listgainz".ToLower()))
                     {
                         await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n Command Is Currently Disabled! Check Commands \"!rs3tracker command\"");
                         //Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                        //string message = e.Message.Content.ToLower();
-                        //message = message.Remove(0, 15);
+                        //message = message.Remove(0, 9).Trim();
                         //string[] users = message.Split(';');
                         //foreach (string user in users)
                         //{
@@ -209,10 +254,10 @@ namespace DiscordBot
                         //    }
                         //}
                     }
-                    if (e.Message.Content.ToLower().Contains("new".ToLower()))
+                    if (message.ToLower().StartsWith("new".ToLower()))
                     {
                         Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                        string message = e.Message.Content.ToLower();
+                        
                         string[] mArray = message.Split(' ');
                         string username = "";
                         for (int i = 2; i < mArray.Length; i++)
@@ -235,7 +280,7 @@ namespace DiscordBot
                                 BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
                                 int xy = BotAnswer.Length;
                                 Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
                             }
                         }
                         else
@@ -245,14 +290,13 @@ namespace DiscordBot
                             BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
                             int xy = BotAnswer.Length;
                             Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                            var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                            await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
                         }
 
                     }
-                    if (e.Message.Content.ToLower().Contains("link".ToLower()))
+                    if (message.ToLower().StartsWith("link".ToLower()))
                     {
-                        Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                        string message = e.Message.Content.ToLower();
+                        Console.WriteLine(DateTime.Now + ": " + e.Message.Content);                        
                         string[] mArray = message.Split(' ');
                         string username = "";
                         for (int i = 2; i < mArray.Length; i++)
@@ -266,6 +310,7 @@ namespace DiscordBot
                         Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + username + " Linked with discord account");
                         await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + username + " Linked with discord account");
                     }
+                    #endregion
                 }
             };
             await discord.ConnectAsync();

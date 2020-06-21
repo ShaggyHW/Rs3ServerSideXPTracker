@@ -11,6 +11,72 @@ namespace XPTrackerLibrary
     {
         SettingsFolder.Settings settings = new SettingsFolder.Settings();
 
+        public void CreateSkillingComp()
+        {
+
+
+        }
+        public string DelBotAdmins(string discordID)
+        {
+            var mysqlSettings = settings.GetMySqlSettings();
+            string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            mySqlConnection.Open();
+            string query = "SELECT * From " + settings.BotAdminTable + " Where DiscordID='" + discordID + "'";
+            var cmd = new MySqlCommand(query, mySqlConnection);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                mySqlConnection.Close();
+                query = "DELETE From " + settings.BotAdminTable + " Where DiscordID='" + discordID + "'";
+                mySqlConnection.Open();
+                cmd = new MySqlCommand(query, mySqlConnection);
+                cmd.ExecuteReader();
+
+                return " Was Removed from Admins";
+            }
+            mySqlConnection.Close();
+
+            return " Was Not an Admin";
+        }
+        public bool GetBotAdmins(string discordID)
+        {
+            var mysqlSettings = settings.GetMySqlSettings();
+            string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            mySqlConnection.Open();
+            string query = "SELECT * From " + settings.BotAdminTable + " Where DiscordID='" + discordID + "'";
+            var cmd = new MySqlCommand(query, mySqlConnection);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                return true;
+            }
+            mySqlConnection.Close();
+            return false;
+        }
+        public string AddBotAdmins(string discordID)
+        {
+            var mysqlSettings = settings.GetMySqlSettings();
+            string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            mySqlConnection.Open();
+            string query = "SELECT * From " + settings.BotAdminTable + " Where DiscordID='" + discordID + "'";
+            var cmd = new MySqlCommand(query, mySqlConnection);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                return " is already Admin";
+            }
+            mySqlConnection.Close();
+            mySqlConnection.Open();
+            query = "Insert Into " + settings.BotAdminTable + " (DiscordID) " +
+                 "VALUES ('" + discordID + "')";
+            cmd = new MySqlCommand(query, mySqlConnection);
+            cmd.ExecuteNonQuery();
+            mySqlConnection.Close();
+            return " added to Admin Group";
+        }
         public void CreateLink_DiscordAcc_Rs3Acc(string rs3name, string discordID)
         {
             var mysqlSettings = settings.GetMySqlSettings();
@@ -29,8 +95,6 @@ namespace XPTrackerLibrary
             mySqlConnection.Close();
 
         }
-
-
         public string GetLinkedAccount(string discordID)
         {
             var mysqlSettings = settings.GetMySqlSettings();
@@ -54,7 +118,6 @@ namespace XPTrackerLibrary
                 return null;
             }
         }
-
         public void InsertIntoDBPlayerGainz(MyClasses.Rs3Player rs3Player)
         {
             var mysqlSettings = settings.GetMySqlSettings();
@@ -126,7 +189,6 @@ namespace XPTrackerLibrary
                 }
             }
         }
-
         public MyClasses.Rs3Player GetRs3PlayerDB(string name)
         {
 
@@ -170,7 +232,6 @@ namespace XPTrackerLibrary
             mySqlConnection.Close();
             return null;
         }
-
         public MyClasses.Rs3Player GetRs3PlayerGainz(string name)
         {
             var mysqlSettings = settings.GetMySqlSettings();

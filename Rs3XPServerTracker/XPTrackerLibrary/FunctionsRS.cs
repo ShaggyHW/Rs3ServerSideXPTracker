@@ -25,12 +25,13 @@ namespace XPTrackerLibrary
         static SettingsFolder.Settings settings = new SettingsFolder.Settings();
         static FunctionsRS()
         {
-
             SettingsFolder.TableCreatorClass tableCreatorClass = new SettingsFolder.TableCreatorClass();
             tableCreatorClass.createTables(settings.Rs3PlayerTable);
             tableCreatorClass.createTables(settings.Rs3PlayerSkillsTable);
             tableCreatorClass.createTables(settings.Rs3PlayerSkillGainzTable);
             tableCreatorClass.createTables(settings.Rs3Player_DiscordAccTable);
+            tableCreatorClass.createTables(settings.SkillingCompTable);
+            tableCreatorClass.createTables(settings.BotAdminTable);
         }
 
         public async Task<MyClasses.Rs3Player> RegisterPlayer(string Username)
