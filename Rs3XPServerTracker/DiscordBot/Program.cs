@@ -31,6 +31,7 @@ namespace DiscordBot
         {
             DiscordConfiguration discordConfiguration = new DiscordConfiguration();
             discordConfiguration.Token = "";
+
             discordConfiguration.TokenType = TokenType.Bot;
             var discord = new DiscordClient(discordConfiguration);
             string BotAnswer = "";
