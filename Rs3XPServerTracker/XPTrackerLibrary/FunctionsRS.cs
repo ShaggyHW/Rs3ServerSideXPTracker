@@ -36,6 +36,7 @@ namespace XPTrackerLibrary
         {
             MyClasses.Rs3Player rs3PlayerAPI = await Rs3API.GetRs3Player(Username);
             MyClasses.Rs3Player rs3PlayerDB = MySqlFunctions.GetRs3PlayerDB(Username);
+            MyClasses.Rs3Player rs3PlayerGainz = new MyClasses.Rs3Player();
             if (rs3PlayerAPI == null)
             {
                 return null;
@@ -48,9 +49,9 @@ namespace XPTrackerLibrary
             }
             else
             {
-                MyClasses.Rs3Player rs3PlayerGainz = new MyClasses.Rs3Player();
-                rs3PlayerGainz.Name = Username;
-                rs3PlayerGainz.Skillvalues = new List<MyClasses.skillvalues>();
+                MyClasses.Rs3Player rs3PlayerGainzInsert = new MyClasses.Rs3Player();
+                rs3PlayerGainzInsert.Name = Username;
+                rs3PlayerGainzInsert.Skillvalues = new List<MyClasses.skillvalues>();
                 //old user Calculate and Update Info
                 foreach (MyClasses.skillvalues skillvaluesAPI in rs3PlayerAPI.Skillvalues)
                 {
@@ -61,17 +62,17 @@ namespace XPTrackerLibrary
                             MyClasses.skillvalues skillvaluesGainz = new MyClasses.skillvalues();
                             skillvaluesGainz = skillvaluesDB;
                             skillvaluesGainz.Xp = skillvaluesAPI.Xp - skillvaluesDB.Xp;
-                            rs3PlayerGainz.Skillvalues.Add(skillvaluesGainz);
+                            rs3PlayerGainzInsert.Skillvalues.Add(skillvaluesGainz);
                         }
                     }
                 }
-                MySqlFunctions.InsertIntoDBPlayerGainz(rs3PlayerGainz);
+                MySqlFunctions.InsertIntoDBPlayerGainz(rs3PlayerGainzInsert);
                 //MySqlFunctions.InsertIntoDBPlayers(rs3PlayerAPI, false);
 
-                var gainz = MySqlFunctions.GetRs3PlayerGainz(Username);
-                return gainz;
+                rs3PlayerGainz = MySqlFunctions.GetRs3PlayerGainz(Username);
+                
             }
-                       
+            return rs3PlayerGainz;
         }
     }
 }

@@ -66,7 +66,7 @@ namespace XPTrackerLibrary.Rs3API
                         skillvalues.Name = "Defence";
                         break;
                     case 3:
-                        skillvalues.Name = "Strenght";
+                        skillvalues.Name = "Strength";
                         break;
                     case 4:
                         skillvalues.Name = "Constitution";

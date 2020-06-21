@@ -28,11 +28,12 @@ namespace DiscordBot
             discordConfiguration.Token = "";
             discordConfiguration.TokenType = TokenType.Bot; 
             var discord = new DiscordClient(discordConfiguration);
-
+            string BotAnswer = "";
             discord.MessageCreated += async e =>
             {
                 if (e.Message.Content.ToLower().StartsWith("!SHWStats".ToLower()))
                 {
+                    Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
                     string message = e.Message.Content.ToLower();
                     string[] mArray = message.Split(' ');
                     string username = "";
@@ -42,10 +43,50 @@ namespace DiscordBot
                     }
                     username.Trim();
                     rs3Player = await functionsRS.Calculate(username);
+                    BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                    AnswerFormats answerFormats = new AnswerFormats();
+                    BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player);
+                    int xy = BotAnswer.Length;
+                    Console.WriteLine("<@!"+e.Message.Author.Id+ ">" + "\n" + BotAnswer);
+                    var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">"+"\n" + BotAnswer + "");
                 }
-               
-                string BotAnswer = JsonConvert.SerializeObject(rs3Player);               
-                await e.Message.RespondAsync(BotAnswer);
+
+                if (e.Message.Content.ToLower().StartsWith("!Dev".ToLower()))
+                {
+                    Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
+                    string message = e.Message.Content.ToLower();
+                    message = message.Remove(0,5);
+                    string username = "";
+                    string[] Multiple = message.Split(';');
+                    foreach(string user in Multiple)
+                    {
+                        username = user;
+                        rs3Player = await functionsRS.Calculate(username);
+                        BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                        AnswerFormats answerFormats = new AnswerFormats();
+                        BotAnswer = await answerFormats.FormatXPAnswer(rs3Player);
+                        string MergedAnswer;
+                        if (BotAnswer.Length > 2000)
+                        {
+                            string[] answerArray = BotAnswer.Split('\n');
+
+                        }
+
+                        Console.WriteLine(BotAnswer);
+                        var x = await e.Message.RespondAsync(DateTime.Now + ":\n " + BotAnswer + "");
+                    }
+                    string[] mArray = message.Split(' ');
+                    
+                    //for (int i = 1; i < mArray.Length; i++)
+                    //{
+                    //    username += mArray[i] + " ";
+                    //}
+                    //username.Trim();
+                   
+                }
+
+
+
 
 
 
