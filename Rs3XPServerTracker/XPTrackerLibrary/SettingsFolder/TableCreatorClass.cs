@@ -62,7 +62,7 @@ namespace XPTrackerLibrary.SettingsFolder
                 {
                     mySqlConnection.Close();
                     mySqlConnection.Open();
-                    query = "CREATE TABLE `" + table + "` (`CompName` VARCHAR(255) NOT NULL, `Status` VARCHAR(255) NOT NULL, `EndDate` VARCHAR(255) NOT NULL, `StartDate` VARCHAR(255) NOT NULL, PRIMARY KEY(`CompName`)) COLLATE = 'utf8_general_ci'; ";
+                    query = "CREATE TABLE `" + table + "` (`CompName` VARCHAR(255) NOT NULL, `Status` VARCHAR(255) NOT NULL, `EndDate` DATETIME NOT NULL, `StartDate` DATETIME NOT NULL, PRIMARY KEY(`CompName`)) COLLATE = 'utf8_general_ci'; ";
                     cmd = new MySqlCommand(query, mySqlConnection);
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();
