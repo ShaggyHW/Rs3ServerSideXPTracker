@@ -15,6 +15,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft;
 using System.IO;
 using System.Reflection;
+using static XPTrackerLibrary.SettingsFolder.Settings;
 
 namespace DiscordBot
 {
@@ -23,6 +24,7 @@ namespace DiscordBot
         static FunctionsRS functionsRS = new FunctionsRS();
         static Rs3Player rs3Player = new Rs3Player();
         static MySqlFunctions SqlFunctions = new MySqlFunctions();
+        static CompSettings compSettings = new CompSettings();
         static void Main(string[] args)
         {
             MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
@@ -108,7 +110,42 @@ namespace DiscordBot
                             message = message.Trim();
                             if (message.ToLower().StartsWith("new".ToLower()))
                             {
+                                message = message.Replace("new", string.Empty).Trim();
+                                string[] CompSettingArray = message.Split('-');
+                                foreach (string str in CompSettingArray)
+                                {
+                                    if (str.Contains("name"))
+                                    {
+                                        compSettings.Name = str.Split('"')[1];
+                                    }
+                                    if (str.Contains("start"))
+                                    {
+                                        compSettings.start = str.Split('"')[1];
+                                    }
+                                    if (str.Contains("end"))
+                                    {
+                                        compSettings.end = str.Split('"')[1];
+                                    }
+                                }
+                                if (compSettings.Name != null && compSettings.start != null && compSettings.end != null)
+                                {
+                                    try
+                                    {
+                                        compSettings.status = "Awaiting";
+                                        string response = SqlFunctions.CreateSkillingComp(compSettings);
 
+                                        await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n Competition \"" + compSettings.Name + "\" was " + response);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        await e.Message.RespondAsync(ex + " " + ex.ToString());
+                                    }
+                                }
+                                else
+                                {
+                                    await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n Missing Instructions make sure you've used the following syntax\n " +
+                                        "!shw host new -name \"Skilling Name Super Here\" -start \"21/06/2020 12:00:00\" -end \"22/06/2020 00:00:00\"");
+                                }
                             }
                         }
                         else
