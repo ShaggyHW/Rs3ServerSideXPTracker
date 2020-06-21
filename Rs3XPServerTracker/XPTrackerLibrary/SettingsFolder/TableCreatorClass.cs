@@ -49,6 +49,16 @@ namespace XPTrackerLibrary.SettingsFolder
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();
                 }
+                if(table== "tbl_RS3_Discord")
+                {
+                    mySqlConnection.Close();
+                    mySqlConnection.Open();
+                    query = "CREATE TABLE " + table + " (Username varchar(255),DiscordID varchar(255))";
+                    cmd = new MySqlCommand(query, mySqlConnection);
+                    cmd.ExecuteNonQuery();
+                    mySqlConnection.Close();
+
+                }
             }
         }
     }

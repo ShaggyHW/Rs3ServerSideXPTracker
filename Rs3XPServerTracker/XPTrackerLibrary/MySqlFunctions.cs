@@ -10,6 +10,51 @@ namespace XPTrackerLibrary
     public class MySqlFunctions
     {
         SettingsFolder.Settings settings = new SettingsFolder.Settings();
+
+        public void CreateLink_DiscordAcc_Rs3Acc(string rs3name, string discordID)
+        {
+            var mysqlSettings = settings.GetMySqlSettings();
+            string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            mySqlConnection.Open();
+            string query = "Delete From " + settings.Rs3Player_DiscordAccTable + " Where DiscordID='" + discordID + "'";
+            var cmd = new MySqlCommand(query, mySqlConnection);
+            var reader = cmd.ExecuteNonQuery();
+            mySqlConnection.Close();
+            mySqlConnection.Open();
+            query = "Insert Into " + settings.Rs3Player_DiscordAccTable + " (Username,DiscordID) " +
+                "VALUES ('" + rs3name + "','" + discordID + "')";
+            cmd = new MySqlCommand(query, mySqlConnection);
+            reader = cmd.ExecuteNonQuery();
+            mySqlConnection.Close();
+
+        }
+
+
+        public string GetLinkedAccount(string discordID)
+        {
+            var mysqlSettings = settings.GetMySqlSettings();
+            string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
+            MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
+            mySqlConnection.Close();
+            mySqlConnection.Open();
+            string query = "SELECT username FROM " + settings.Rs3Player_DiscordAccTable + " WHERE DiscordID='" + discordID + "'";
+            var cmd = new MySqlCommand(query, mySqlConnection);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    return reader.GetString(0);
+                }
+                return null;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void InsertIntoDBPlayerGainz(MyClasses.Rs3Player rs3Player)
         {
             var mysqlSettings = settings.GetMySqlSettings();
@@ -19,7 +64,7 @@ namespace XPTrackerLibrary
             string query = "Delete From " + settings.Rs3PlayerSkillGainzTable + " Where username='" + rs3Player.Name + "'";
             var cmd = new MySqlCommand(query, mySqlConnection);
             var reader = cmd.ExecuteNonQuery();
-            mySqlConnection.Close();            
+            mySqlConnection.Close();
             foreach (MyClasses.skillvalues skillvalues in rs3Player.Skillvalues)
             {
                 mySqlConnection.Open();
@@ -97,7 +142,7 @@ namespace XPTrackerLibrary
             {
                 MyClasses.Rs3Player rs3Player = new MyClasses.Rs3Player();
                 while (reader.Read())
-                {                    
+                {
                     rs3Player.Name = reader.GetString(0);
                     rs3Player.Skillvalues = new List<MyClasses.skillvalues>();
                 }

@@ -30,6 +30,7 @@ namespace XPTrackerLibrary
             tableCreatorClass.createTables(settings.Rs3PlayerTable);
             tableCreatorClass.createTables(settings.Rs3PlayerSkillsTable);
             tableCreatorClass.createTables(settings.Rs3PlayerSkillGainzTable);
+            tableCreatorClass.createTables(settings.Rs3Player_DiscordAccTable);
         }
 
         public async Task<MyClasses.Rs3Player> RegisterPlayer(string Username)

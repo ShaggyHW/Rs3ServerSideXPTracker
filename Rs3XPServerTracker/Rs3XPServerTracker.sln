@@ -5,13 +5,15 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs3TrackerManager", "Rs3TrackerManager\Rs3TrackerManager.csproj", "{15D27ECA-3DC6-4677-9A66-F684FE4C0202}"
 	ProjectSection(ProjectDependencies) = postProject
-		{006F7C2A-05DD-43A9-908B-1F004ECC4DCC} = {006F7C2A-05DD-43A9-908B-1F004ECC4DCC}
 		{64978676-56E5-4C00-82F9-9AE71F204B2A} = {64978676-56E5-4C00-82F9-9AE71F204B2A}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPTrackerLibrary", "XPTrackerLibrary\XPTrackerLibrary.csproj", "{64978676-56E5-4C00-82F9-9AE71F204B2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordBot", "DiscordBot\DiscordBot.csproj", "{006F7C2A-05DD-43A9-908B-1F004ECC4DCC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{64978676-56E5-4C00-82F9-9AE71F204B2A} = {64978676-56E5-4C00-82F9-9AE71F204B2A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

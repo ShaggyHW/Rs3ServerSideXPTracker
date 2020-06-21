@@ -10,12 +10,14 @@ gainz
 
 Usage - !SHW gainz username
 
+username not required IF command link was used previously
 Reponds with the xp gained since the last time the command was used
 
 gains
 
 Usage - !SHW gainz username
 
+username not required IF command link was used previously
 Same as Gainz
 
 listgainz 
@@ -36,6 +38,15 @@ Usage - !SHW stats username
 
 Responds with the current xp and levels
 
-!SHW commands
+commands
+
+Usage - !SHW commands
 
 Responds with a link to the list of Commands
+
+link
+
+Usage - !SHW link username
+
+Creates a link between the discord account that used the command and the rs3 username
+
