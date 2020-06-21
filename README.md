@@ -1,5 +1,9 @@
 # Rs3ServerSideXPTracker
 
+BEFORE CHECKING STATS OR GAINS YOU SHOULD LOBBY SO THE RSAPI UPDATES YOUR XP VALUES!
+
+
+
 BotPrefix - Every Message staring with !SHW will be considered a bot command
 
 !SHW

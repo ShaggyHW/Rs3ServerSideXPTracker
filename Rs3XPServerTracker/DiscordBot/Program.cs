@@ -249,7 +249,6 @@ namespace DiscordBot
                         }
 
                     }
-
                     if (e.Message.Content.ToLower().Contains("link".ToLower()))
                     {
                         Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
