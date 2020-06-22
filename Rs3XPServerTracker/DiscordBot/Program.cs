@@ -102,7 +102,7 @@ namespace DiscordBot
                     else if (message.ToLower().StartsWith("host".ToLower()))
                     {
                         #region SkillingHostCommands
-                        bool isHost = SqlFunctions.GetBotAdmins(e.Author.Id.ToString());
+                        bool isHost = SqlFunctions.GetBotHosts(e.Author.Id.ToString());
                         if (isHost)
                         {
 
@@ -134,7 +134,7 @@ namespace DiscordBot
                                         compSettings.status = "Awaiting";
                                         string response = SqlFunctions.CreateSkillingComp(compSettings);
 
-                                        await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n Competition \"" + compSettings.Name + "\" was " + response);
+                                        await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n Competition \"" + compSettings.Name + "\" " + response);
                                     }
                                     catch (Exception ex)
                                     {

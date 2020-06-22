@@ -24,7 +24,7 @@ namespace XPTrackerLibrary
             var reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
-                return " Already Exists";
+                return "Already Exists";
             }
             mySqlConnection.Close();
             mySqlConnection.Open();
@@ -33,7 +33,7 @@ namespace XPTrackerLibrary
             cmd = new MySqlCommand(query, mySqlConnection);
             cmd.ExecuteNonQuery();
             mySqlConnection.Close();
-            return " Created";
+            return "Was Created";
         }
         public string DelBotHosts(string discordID)
         {
