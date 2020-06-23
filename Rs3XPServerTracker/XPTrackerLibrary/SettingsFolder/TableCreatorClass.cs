@@ -35,7 +35,7 @@ namespace XPTrackerLibrary.SettingsFolder
                 {
                     mySqlConnection.Close();
                     mySqlConnection.Open();
-                    query = "CREATE TABLE " + table + " (Username varchar(255),Name varchar(255), Level varchar(255), Xp varchar(255), Rank varchar(255), ID int)";
+                    query = "CREATE TABLE `" + table + "` (`Username` VARCHAR(255) NOT NULL, `Name` VARCHAR(255) NOT NULL, `Level` VARCHAR(255) NOT NULL, `Xp` VARCHAR(255) NOT NULL, `Rank` VARCHAR(255) NOT NULL, `ID` INT(11) NOT NULL, `SyncTime` DATETIME NULL DEFAULT NULL) COLLATE = 'utf8_general_ci'ENGINE = InnoDB; ";
                     cmd = new MySqlCommand(query, mySqlConnection);
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();
@@ -44,7 +44,7 @@ namespace XPTrackerLibrary.SettingsFolder
                 {
                     mySqlConnection.Close();
                     mySqlConnection.Open();
-                    query = "CREATE TABLE " + table + " (Username varchar(255),Name varchar(255), Level varchar(255), Xp varchar(255), Rank varchar(255), ID int)";
+                    query = "CREATE TABLE `"+table+"` (`Username` VARCHAR(255) NOT NULL, `Name` VARCHAR(255) NOT NULL, `Level` VARCHAR(255) NOT NULL, `Xp` VARCHAR(255) NOT NULL, `Rank` VARCHAR(255) NOT NULL, `ID` INT(11) NOT NULL, `SyncTime` DATETIME NULL DEFAULT NULL) COLLATE = 'utf8_general_ci'ENGINE = InnoDB; ";
                     cmd = new MySqlCommand(query, mySqlConnection);
                     cmd.ExecuteNonQuery();
                     mySqlConnection.Close();

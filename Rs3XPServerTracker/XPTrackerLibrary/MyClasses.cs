@@ -11,6 +11,7 @@ namespace XPTrackerLibrary.MyClasses
         public string Name { get; set; }
         public List<skillvalues> Skillvalues { get; set; }
         public string Error { get; set; }
+        public string SyncTime { get; set; }
     }
     public class CompSettings
     {

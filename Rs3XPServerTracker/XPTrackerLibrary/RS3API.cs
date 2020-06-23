@@ -143,12 +143,11 @@ namespace XPTrackerLibrary.Rs3API
                     case 28:
                         skillvalues.Name = "Archeology";
                         break;
-
                 }
             }
             rs3Player.Skillvalues.Sort((x, y) => { return x.ID - y.ID; });
 
-
+            rs3Player.SyncTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
             return rs3Player;
         }
 
