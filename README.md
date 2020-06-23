@@ -5,13 +5,21 @@
 
 TODO:
 	-ClanPoints System (awaiting reply)
+	
 	-Tic_Tac_Toe
+	
 	-Skilling Competitions (in development)
+	
 	-PVM Competitions? (might be extremelly hard to protect/Implement)
+	
 	-PVM HighScores? (might be extremelly hard to protect/Implement)
+	
 	-Tic_Tac_Toe Ranking Ladder (LuL)
+	
 	-DominionTower HighScores
+	
 	-ClueHunting Rankings (By Clue Count, can be separate tables for clue types)
+	
 	-RuneScore Ranking
 
 
