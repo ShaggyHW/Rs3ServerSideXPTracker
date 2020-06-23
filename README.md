@@ -4,10 +4,9 @@
 
 
 TODO:
-	-ClanPoints System (awaiting reply)
-	
-	-Tic_Tac_Toe
-	
+
+	-ClanPoints System (awaiting reply)	
+	-Tic_Tac_Toe	
 	-Skilling Competitions (in development)
 	
 	-PVM Competitions? (might be extremelly hard to protect/Implement)
