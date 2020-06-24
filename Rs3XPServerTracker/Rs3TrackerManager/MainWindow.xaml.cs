@@ -37,8 +37,7 @@ namespace Rs3TrackerManager
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var rs3Gainz = await FunctionsRS.Calculate(txt_Username.Text.ToLower());
-            var x = JsonConvert.SerializeObject(rs3Gainz);
+        
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

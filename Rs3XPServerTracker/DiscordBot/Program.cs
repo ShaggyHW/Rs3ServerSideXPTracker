@@ -105,7 +105,6 @@ namespace DiscordBot
                         bool isHost = SqlFunctions.GetBotHosts(e.Author.Id.ToString());
                         if (isHost)
                         {
-
                             message = message.Replace("host".ToLower(), string.Empty);
                             message = message.Trim();
                             if (message.ToLower().StartsWith("new".ToLower()))
@@ -277,11 +276,61 @@ namespace DiscordBot
                                 await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + username + " Linked with discord account");
                             }
                         }
+                        if (message.ToLower().StartsWith("new".ToLower()))
+                        {
+                            Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
 
+                            string[] mArray = message.Split(' ');
+                            string username = "";
+                            for (int i = 1; i < mArray.Length; i++)
+                            {
+                                username += mArray[i] + " ";
+                            }
+                            username = username.Trim();
+                            var rs3Player = await functionsRS.RegisterPlayer(username);
+
+                            if (rs3Player.Error != null)
+                            {
+                                if (!string.IsNullOrEmpty(rs3Player.Error))
+                                {
+                                    await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + rs3Player.Error + "");
+                                }
+                                else
+                                {
+                                    BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                                    AnswerFormats answerFormats = new AnswerFormats();
+                                    BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
+                                    int xy = BotAnswer.Length;
+                                    Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
+                                    await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                                }
+                            }
+                            else
+                            {
+                                BotAnswer = JsonConvert.SerializeObject(rs3Player);
+                                AnswerFormats answerFormats = new AnswerFormats();
+                                BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
+                                int xy = BotAnswer.Length;
+                                Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
+                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
+                            }
+
+                        }
 
                         if (message.ToLower().StartsWith("gains".ToLower()))
                         {
                             Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
+                            message = message.ToLower().Replace("gains", string.Empty).Trim();
+                            bool HasTimeParam = false;
+                            string TimeParam = "";
+                            //!SHW GAINS -since "2020-06-23" ali the shag
+                            if (message.ToLower().StartsWith("-since"))
+                            {
+                                HasTimeParam = true;
+                                message = message.Replace("-since", string.Empty).Trim();
+                                TimeParam = message.Split('"')[1];
+                                message = message.Split('"')[2].Trim();
+                            }
                             bool alreadyAnswered = false;
                             string username = "";
                             if (e.MentionedUsers.Count() > 0)
@@ -319,9 +368,18 @@ namespace DiscordBot
                             }
                             else
                             {
-                                rs3Player = await functionsRS.Calculate(username);
 
+                                //FIxing this part
 
+                                if (HasTimeParam)
+                                {
+                                    rs3Player = await functionsRS.CalculateSince(username,TimeParam);
+
+                                }
+                                else
+                                {
+                                    rs3Player = await functionsRS.Calculate(username);
+                                }     
 
 
 
@@ -369,122 +427,6 @@ namespace DiscordBot
 
 
 
-                        if (message.ToLower().StartsWith("gainz".ToLower()))
-                        {
-                            Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                            string username = "";
-                            if (e.MentionedUsers.Count() > 0)
-                            {
-                                username = SqlFunctions.GetLinkedAccount(e.MentionedUsers[0].Id.ToString());
-                            }
-                            else
-                            {
-                                string[] mArray = message.Split(' ');
-                                for (int i = 1; i < mArray.Length; i++)
-                                {
-                                    username += mArray[i] + " ";
-                                }
-                                username = username.Trim();
-                                if (string.IsNullOrEmpty(username))
-                                {
-                                    username = SqlFunctions.GetLinkedAccount(e.Message.Author.Id.ToString());
-                                }
-                            }
-                            if (string.IsNullOrEmpty(username))
-                            {
-                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n No Linked Account Please use \"!SHW link username\" to link your discord and RS3 account");
-                            }
-                            else
-                            {
-                                rs3Player = await functionsRS.Calculate(username);
-                                if (rs3Player.Error != null)
-                                {
-                                    if (!string.IsNullOrEmpty(rs3Player.Error))
-                                    {
-                                        await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + rs3Player.Error + "");
-                                    }
-                                    else
-                                    {
-                                        BotAnswer = JsonConvert.SerializeObject(rs3Player);
-                                        AnswerFormats answerFormats = new AnswerFormats();
-                                        BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Gainz");
-                                        int xy = BotAnswer.Length;
-                                        Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                        await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
-                                    }
-                                }
-                                else
-                                {
-                                    BotAnswer = JsonConvert.SerializeObject(rs3Player);
-                                    AnswerFormats answerFormats = new AnswerFormats();
-                                    BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Gainz");
-                                    int xy = BotAnswer.Length;
-                                    Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                    await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
-                                }
-                            }
-                        }
-                        if (message.ToLower().StartsWith("listgainz".ToLower()))
-                        {
-                            await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n Command Is Currently Disabled! Check Commands \"!rs3tracker command\"");
-                            //Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-                            //message = message.Remove(0, 9).Trim();
-                            //string[] users = message.Split(';');
-                            //foreach (string user in users)
-                            //{
-                            //    rs3Player = await functionsRS.Calculate(user);
-                            //    if (rs3Player != null)
-                            //    {
-                            //        BotAnswer = JsonConvert.SerializeObject(rs3Player);
-                            //        AnswerFormats answerFormats = new AnswerFormats();
-                            //        BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Gainz");
-                            //        int xy = BotAnswer.Length;
-                            //        Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                            //        var x = await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
-                            //    }
-                            //}
-                        }
-                        if (message.ToLower().StartsWith("new".ToLower()))
-                        {
-                            Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
-
-                            string[] mArray = message.Split(' ');
-                            string username = "";
-                            for (int i = 1; i < mArray.Length; i++)
-                            {
-                                username += mArray[i] + " ";
-                            }
-                            username = username.Trim();
-                            var rs3Player = await functionsRS.RegisterPlayer(username);
-
-                            if (rs3Player.Error != null)
-                            {
-                                if (!string.IsNullOrEmpty(rs3Player.Error))
-                                {
-                                    await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + rs3Player.Error + "");
-                                }
-                                else
-                                {
-                                    BotAnswer = JsonConvert.SerializeObject(rs3Player);
-                                    AnswerFormats answerFormats = new AnswerFormats();
-                                    BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
-                                    int xy = BotAnswer.Length;
-                                    Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                    await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
-                                }
-                            }
-                            else
-                            {
-                                BotAnswer = JsonConvert.SerializeObject(rs3Player);
-                                AnswerFormats answerFormats = new AnswerFormats();
-                                BotAnswer = await answerFormats.FormatXPAnswerTable(rs3Player, "Current");
-                                int xy = BotAnswer.Length;
-                                Console.WriteLine("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer);
-                                await e.Message.RespondAsync("<@!" + e.Message.Author.Id + ">" + "\n" + BotAnswer + "");
-                            }
-
-                        }
-                      
                         #endregion
                     }
 

@@ -60,7 +60,6 @@ namespace XPTrackerLibrary
                 }
             }
         }
-
         public async Task<MyClasses.Rs3Player> GetCurrentStats(string Username)
         {
             MyClasses.Rs3Player rs3PlayerAPI = await Rs3API.GetRs3Player(Username);
@@ -78,8 +77,59 @@ namespace XPTrackerLibrary
 
 
 
+
+
+        public async Task<MyClasses.Rs3Player> CalculateSince(string Username,string Since)
+        {
+            //needs complete rework, change input to take in the Rs3player classes instead of username string
+
+            MyClasses.Rs3Player rs3PlayerAPI = await Rs3API.GetRs3Player(Username);
+            MyClasses.Rs3Player rs3PlayerDB = MySqlFunctions.GetRs3PlayerDBSince(Username,Since);
+            if (rs3PlayerAPI == null)
+            {
+                rs3PlayerAPI = new MyClasses.Rs3Player();
+                rs3PlayerAPI.Error = "Player \"" + Username + "\" Doesn's Exist in the RS Database!";
+                return rs3PlayerAPI;
+            }
+            if (rs3PlayerDB == null)
+            {
+                //New User Add him to DB
+                //MySqlFunctions.InsertIntoDBPlayers(rs3PlayerAPI, true);
+                rs3PlayerDB = new MyClasses.Rs3Player();
+                rs3PlayerDB.Error = "Player \"" + Username + "\" Doesn's Exist in the Bot Database!";
+                return rs3PlayerDB;
+            }
+
+            MyClasses.Rs3Player rs3PlayerGainzInsert = new MyClasses.Rs3Player();
+            rs3PlayerGainzInsert.Name = Username;
+            rs3PlayerGainzInsert.Skillvalues = new List<MyClasses.skillvalues>();
+            //old user Calculate and Update Info
+            foreach (MyClasses.skillvalues skillvaluesAPI in rs3PlayerAPI.Skillvalues)
+            {
+                foreach (MyClasses.skillvalues skillvaluesDB in rs3PlayerDB.Skillvalues)
+                {
+                    if (skillvaluesAPI.ID == skillvaluesDB.ID)
+                    {
+                        MyClasses.skillvalues skillvaluesGainz = new MyClasses.skillvalues();
+                        skillvaluesGainz = skillvaluesDB;
+                        skillvaluesGainz.Xp = skillvaluesAPI.Xp - skillvaluesDB.Xp;
+                        rs3PlayerGainzInsert.Skillvalues.Add(skillvaluesGainz);
+                    }
+                }
+            }
+            rs3PlayerGainzInsert.SyncTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+            MySqlFunctions.InsertIntoDBPlayerGainz(rs3PlayerGainzInsert);
+
+            MyClasses.Rs3Player rs3PlayerGainz = new MyClasses.Rs3Player();
+            rs3PlayerGainz = MySqlFunctions.GetRs3PlayerGainz(Username);
+
+            return rs3PlayerGainz;
+        }
+
         public async Task<MyClasses.Rs3Player> Calculate(string Username)
         {
+            //needs complete rework, change input to take in the Rs3player classes instead of username string
+
             MyClasses.Rs3Player rs3PlayerAPI = await Rs3API.GetRs3Player(Username);
             MyClasses.Rs3Player rs3PlayerDB = MySqlFunctions.GetRs3PlayerDB(Username);
             if (rs3PlayerAPI == null)
@@ -114,7 +164,7 @@ namespace XPTrackerLibrary
                     }
                 }
             }
-            rs3PlayerGainzInsert.SyncTime = DateTime.UtcNow.ToString("YYYY-MM-DD HH:mm:SS");
+            rs3PlayerGainzInsert.SyncTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
             MySqlFunctions.InsertIntoDBPlayerGainz(rs3PlayerGainzInsert);
 
             MyClasses.Rs3Player rs3PlayerGainz = new MyClasses.Rs3Player();
