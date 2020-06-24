@@ -74,17 +74,12 @@ namespace XPTrackerLibrary
                 return rs3PlayerAPI;
             }
         }
-
-
-
-
-
-        public async Task<MyClasses.Rs3Player> CalculateSince(string Username,string Since)
+        public async Task<MyClasses.Rs3Player> CalculateSince(string Username, string Since)
         {
             //needs complete rework, change input to take in the Rs3player classes instead of username string
 
             MyClasses.Rs3Player rs3PlayerAPI = await Rs3API.GetRs3Player(Username);
-            MyClasses.Rs3Player rs3PlayerDB = MySqlFunctions.GetRs3PlayerDBSince(Username,Since);
+            MyClasses.Rs3Player rs3PlayerDB = MySqlFunctions.GetRs3PlayerDBSince(Username, Since);
             if (rs3PlayerAPI == null)
             {
                 rs3PlayerAPI = new MyClasses.Rs3Player();
@@ -92,7 +87,7 @@ namespace XPTrackerLibrary
                 return rs3PlayerAPI;
             }
             if (rs3PlayerDB.Error != null)
-            {              
+            {
                 return rs3PlayerDB;
             }
 
@@ -121,7 +116,6 @@ namespace XPTrackerLibrary
 
             return rs3PlayerGainz;
         }
-
         public async Task<MyClasses.Rs3Player> Calculate(string Username)
         {
             //needs complete rework, change input to take in the Rs3player classes instead of username string

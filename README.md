@@ -44,7 +44,7 @@ HOST
 		
 		new
 
-			Usage - !shw host new -name "Skilling Name Super Here" -start "21/06/2020 12:00:00" -end "22/06/2020 00:00:00"
+			Usage - !shw host new -name "Skilling Comp Name Here" -start "21/06/2020 12:00:00" -end "22/06/2020 00:00:00"
 
 				-name is the name of the competition
 				-start is the date and time for it to start
@@ -86,5 +86,5 @@ USER
 
 			Usage - !SHW link username
 
-		Creates a link between the discord account that used the command and the rs3 username
+		Creates a link between the discord account the rs3 username
 
