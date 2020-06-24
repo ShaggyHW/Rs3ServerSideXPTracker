@@ -44,7 +44,7 @@ HOST
 		
 		new
 
-			Usage - !shw host new -name "Skilling Comp Name Here" -start "21/06/2020 12:00:00" -end "22/06/2020 00:00:00"
+			Usage - !shw host new -name "Skilling Comp Name Here" -start "2020-06-25 12:33:14" -end "2020-06-24 12:33:14"
 
 				-name is the name of the competition
 				-start is the date and time for it to start
