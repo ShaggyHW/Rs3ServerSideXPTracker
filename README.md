@@ -55,27 +55,12 @@ USER
 
 	COMMANDS:
 
-		gainz
-
-			Usage - !SHW gainz username
-
-			username not required IF command link was used previously
-
-		Reponds with the xp gained since the last time the command was used
-
 		gains
 
-			Usage - !SHW gainz username
+			Usage - !SHW gains username (Reponds with the xp gained since the last time the command was used)
+			Usage - !SHW gains -since "2020-06-21" username (Reponds with the xp gained since the date specified if theres a record available)
 
-			username not required IF command link was used previously
-		
-		Same as Gainz
-
-		listgainz 
-
-			Usage - !SHW listgainz username;username;....;username (Currently Disabled!)
-
-		Same as gainz/gains but for multiple users
+			username not required IF command link was used previously		
 
 		new
 

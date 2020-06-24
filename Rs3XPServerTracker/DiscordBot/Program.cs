@@ -322,7 +322,6 @@ namespace DiscordBot
                             }
 
                         }
-
                         if (message.ToLower().StartsWith("gains".ToLower()))
                         {
                             Console.WriteLine(DateTime.Now + ": " + e.Message.Content);
@@ -374,21 +373,14 @@ namespace DiscordBot
                             }
                             else
                             {
-                                //FIxing this part
                                 if (HasTimeParam)
-                                {
-                                    rs3Player = await functionsRS.CalculateSince(username,TimeParam);
-
+                                {                                    
+                                    rs3Player = await functionsRS.CalculateSince(username, TimeParam);
                                 }
                                 else
                                 {
                                     rs3Player = await functionsRS.Calculate(username);
-                                }     
-
-
-
-
-
+                                }
                                 if (rs3Player.Error != null)
                                 {
                                     if (!string.IsNullOrEmpty(rs3Player.Error))
@@ -428,8 +420,6 @@ namespace DiscordBot
                                 }
                             }
                         }
-
-
 
                         #endregion
                     }

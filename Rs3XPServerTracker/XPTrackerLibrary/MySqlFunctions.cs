@@ -262,7 +262,6 @@ namespace XPTrackerLibrary
         #region WIP
         public MyClasses.Rs3Player GetRs3PlayerDB(string name)
         {
-
             var mysqlSettings = settings.GetMySqlSettings();
             string connectionString = string.Format("Server={0}; database={1}; UID={2}; password={3}", mysqlSettings.ip, mysqlSettings.database, mysqlSettings.username, mysqlSettings.password);
             MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
@@ -276,7 +275,6 @@ namespace XPTrackerLibrary
                 MyClasses.Rs3Player rs3Player = new MyClasses.Rs3Player();
                 rs3Player.Name = name;
                 rs3Player.Skillvalues = new List<MyClasses.skillvalues>();
-
                 while (reader.Read())
                 {
                     MyClasses.skillvalues skillvalues = new MyClasses.skillvalues();
@@ -306,7 +304,7 @@ namespace XPTrackerLibrary
             MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
             mySqlConnection.Close();
             mySqlConnection.Open();
-            string query = "SELECT ID,Level,name,Rank,Xp,SyncTime FROM " + settings.Rs3PlayerSkillsTable + " WHERE Username='" + name + "' And SyncTime Like '"+since+"' order by SyncTime Desc";
+            string query = "SELECT ID,Level,name,Rank,Xp,SyncTime FROM " + settings.Rs3PlayerSkillsTable + " WHERE Username='" + name + "' And SyncTime Like '"+since+"%' order by SyncTime Desc";
             var cmd = new MySqlCommand(query, mySqlConnection);
             var reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -325,13 +323,22 @@ namespace XPTrackerLibrary
                     skillvalues.Xp = Convert.ToInt64(reader.GetString(4));
                     rs3Player.Skillvalues.Add(skillvalues);
                     rs3Player.SyncTime = reader.GetString(5);
-
+                    if (skillvalues.ID == 28)
+                    {
+                        break;
+                    }
                 }
                 mySqlConnection.Close();
                 return rs3Player;
             }
-            mySqlConnection.Close();
-            return null;
+            else
+            {
+                MyClasses.Rs3Player rs3Player = new MyClasses.Rs3Player();
+                rs3Player.Error = "No Data Available For The Requested Date ("+since+")";
+                mySqlConnection.Close();
+                return rs3Player;
+            }
+           
         }
         #endregion
 
