@@ -268,7 +268,7 @@ namespace XPTrackerLibrary
             MySqlConnection mySqlConnection = new MySqlConnection(connectionString);
             mySqlConnection.Close();
             mySqlConnection.Open();
-            string query = "SELECT ID,Level,name,Rank,Xp,SyncTime FROM " + settings.Rs3PlayerSkillsTable + " WHERE Username='" + name + "' order by SyncTime Desc";
+            string query = "SELECT ID,Level,name,Rank,Xp,SyncTime FROM " + settings.Rs3PlayerSkillsTable + " WHERE Username='" + name + "' order by SyncTime Desc, ID Asc";
             var cmd = new MySqlCommand(query, mySqlConnection);
             var reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -287,7 +287,10 @@ namespace XPTrackerLibrary
                     skillvalues.Xp = Convert.ToInt64(reader.GetString(4));
                     rs3Player.Skillvalues.Add(skillvalues);
                     rs3Player.SyncTime = reader.GetString(5);
-
+                    if (skillvalues.ID == 28)
+                    {
+                        break;
+                    }
                 }
                 mySqlConnection.Close();
                 return rs3Player;

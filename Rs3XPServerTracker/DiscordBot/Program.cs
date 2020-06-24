@@ -32,7 +32,13 @@ namespace DiscordBot
         static async Task MainAsync(string[] args)
         {
             DiscordConfiguration discordConfiguration = new DiscordConfiguration();
+
+
+            #region SensInf
             discordConfiguration.Token = "";
+            #endregion
+
+
 
             discordConfiguration.TokenType = TokenType.Bot;
             var discord = new DiscordClient(discordConfiguration);
@@ -368,9 +374,7 @@ namespace DiscordBot
                             }
                             else
                             {
-
                                 //FIxing this part
-
                                 if (HasTimeParam)
                                 {
                                     rs3Player = await functionsRS.CalculateSince(username,TimeParam);

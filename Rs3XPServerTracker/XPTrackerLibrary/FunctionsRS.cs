@@ -146,6 +146,8 @@ namespace XPTrackerLibrary
                 rs3PlayerDB.Error = "Player \"" + Username + "\" Doesn's Exist in the Bot Database!";
                 return rs3PlayerDB;
             }
+            MySqlFunctions.InsertIntoDBPlayers(rs3PlayerAPI);
+
 
             MyClasses.Rs3Player rs3PlayerGainzInsert = new MyClasses.Rs3Player();
             rs3PlayerGainzInsert.Name = Username;
