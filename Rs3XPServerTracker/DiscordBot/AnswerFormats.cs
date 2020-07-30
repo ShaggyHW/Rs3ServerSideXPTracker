@@ -1,25 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using XPTrackerLibrary.MyClasses;
-using Newtonsoft.Json;
-using Newtonsoft;
-using Newtonsoft.Json.Converters;
-namespace DiscordBot
-{
-    public class AnswerFormats
-    {
+namespace DiscordBot {
+    public class AnswerFormats {
         static string lineSpli2 = "+---------------------------------------+";
         static string lineSplit = "+-------------+-----+----------+---------+";
         static string lineHeaderGainz = "|----Skill----|Level|--XPGainz-|HighScore|";
         static string lineHeaderCurre = "|----Skill----|Level|----XP----|HighScore|";
-        public string setTableLine(skillvalues skill)
-        {
+        public string setTableLine(skillvalues skill) {
             string line = "";
-            switch (skill.Name)
-            {
+            switch (skill.Name) {
                 case "Overall":
                     line = "|---Overall---|";
                     break;
@@ -108,8 +97,7 @@ namespace DiscordBot
                     line = "|--Archeology-|";
                     break;
             }
-            switch (skill.Level.ToString().Length)
-            {
+            switch (skill.Level.ToString().Length) {
                 case 1:
                     line += "--" + skill.Level + "--|";
                     break;
@@ -123,8 +111,7 @@ namespace DiscordBot
                     line += "-" + skill.Level + "|";
                     break;
             }
-            switch (skill.Xp.ToString().Length)
-            {
+            switch (skill.Xp.ToString().Length) {
                 case 1:
                     line += "-----" + skill.Xp + "----|";
                     break;
@@ -156,8 +143,7 @@ namespace DiscordBot
                     line += "" + skill.Xp + "|";
                     break;
             }
-            switch (skill.Rank.ToString().Length)
-            {
+            switch (skill.Rank.ToString().Length) {
                 case 1:
                     line += "----" + skill.Rank + "----|";
                     break;
@@ -183,11 +169,9 @@ namespace DiscordBot
             return line;
         }
 
-        public async Task<string> FormatXPAnswerTable(Rs3Player rs3Player, string format)
-        {
+        public async Task<string> FormatXPAnswerTable(Rs3Player rs3Player, string format) {
             string HeaderName = "";
-            switch (rs3Player.Name.Length)
-            {
+            switch (rs3Player.Name.Length) {
                 case 0:
                     HeaderName = "+--------------------" + rs3Player.Name + "--------------------+";
                     break;
@@ -231,21 +215,17 @@ namespace DiscordBot
 
 
             string botAnswer = "``` " + HeaderName;
-            if (format == "Gainz")
-            {
+            if (format == "Gainz") {
                 botAnswer += "\n " + lineSplit + "\n " + lineHeaderGainz + "\n " + lineSplit;
             }
-            if (format == "Current")
-            {
+            if (format == "Current") {
                 botAnswer += "\n " + lineSplit + "\n " + lineHeaderCurre + "\n " + lineSplit;
             }
 
-            foreach (skillvalues skillvalues in rs3Player.Skillvalues)
-            {
+            foreach (skillvalues skillvalues in rs3Player.Skillvalues) {
                 string line = "\n ";
                 line += setTableLine(skillvalues);
-                if (skillvalues.Name == "Overall")
-                {
+                if (skillvalues.Name == "Overall") {
                     line += "\n " + lineSplit;
                 }
                 botAnswer += line;
